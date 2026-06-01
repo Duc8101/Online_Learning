@@ -3,6 +3,7 @@ package com.onlinelearning.repository;
 import com.onlinelearning.model.dto.response.AllCoursesResponseDto;
 import com.onlinelearning.model.dto.response.CheckLessonAndEnrollCourseExist;
 import com.onlinelearning.model.dto.response.CourseDetailResponseDto;
+import com.onlinelearning.model.dto.response.StudentOrTeacherCoursesResponseDto;
 import com.onlinelearning.model.entity.Course;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
@@ -60,4 +61,20 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
     @Modifying
     @Query("update Course c set c.deleted = true where c.courseId = :courseId and c.deleted = false")
     void setCourseDeleted(int courseId);
+
+    @Query(value = """
+            SELECT new com.onlinelearning.model.dto.response.StudentOrTeacherCoursesResponseDto(\
+            c.courseId, c.courseName, c.image, c.category.categoryId, \
+            c.creator.userId, c.creator.fullName, c.description) FROM Course c
+            where c.deleted = false
+            and EXISTS (
+            SELECT 1 FROM EnrollCourse ec where ec.course = c and ec.student.userId = :studentId
+            )
+            """,
+            countQuery = "SELECT COUNT (c.courseId) FROM Course c\n"
+                    + "where c.deleted = false\n"
+                    + "and EXISTS (\n"
+                    + "SELECT 1 FROM EnrollCourse ec where ec.course = c and ec.student.userId = :studentId\n"
+                    + ")")
+    Page<StudentOrTeacherCoursesResponseDto> getStudentCourses(long studentId, Pageable pageable);
 }
