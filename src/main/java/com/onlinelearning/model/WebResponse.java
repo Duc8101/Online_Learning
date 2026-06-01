@@ -1,4 +1,4 @@
-package com.onlinelearning.model.response;
+package com.onlinelearning.model;
 
 import lombok.*;
 
@@ -6,11 +6,10 @@ import java.util.Map;
 
 @Getter
 @Setter
-@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@NoArgsConstructor
 @AllArgsConstructor
 public class WebResponse {
 
-    private int code;
     private String viewName;
     private Map<String, Object> data;
 
