@@ -19,4 +19,8 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
             + ", q.quiz.quizId, q.answer1, q.answer2, q.answer3, q.answer4, null) from Question q\n"
             + "where q.quiz.quizId = :quizId")
     List<QuestionListForStartQuizResponseDto> getQuestionsForStartQuiz(int quizId, Pageable pageable);
+
+    @Query("select q.answerCorrect from Question q where q.quiz.quizId = :quizId and exists (\n"
+            + " select 1 from StartQuiz sq where sq.question = q and sq.student.userId = :studentId)")
+    List<Integer> getAnswersCorrect(int quizId, long studentId);
 }

@@ -28,4 +28,13 @@ public interface StartQuizRepository extends JpaRepository<StartQuiz, String> {
 
     @Query("select sq.answer from StartQuiz sq where sq.question.questionId = :questionId and sq.student.userId = :studentId")
     List<Integer> getAnswers(int questionId, long studentId, Pageable pageable);
+
+    @Query("select sq.answer from StartQuiz sq where sq.question.quiz.quizId = :quizId and sq.student.userId = :studentId\n"
+            + "order by sq.question.questionId")
+    List<Integer> getChosenAnswers(int quizId, long studentId);
+
+    @Transactional
+    @Modifying
+    @Query("delete from StartQuiz sq where sq.student.userId = :studentId and sq.question.quiz.quizId = :quizId")
+    void deleteAllByStudentIdAndQuizId(long studentId, int quizId);
 }
