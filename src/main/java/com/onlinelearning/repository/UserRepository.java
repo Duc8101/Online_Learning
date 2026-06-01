@@ -29,4 +29,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u.userId FROM User u WHERE u.email = :email")
     Long getUserId(String email);
+
+    @Query("select exists ("
+            + "SELECT 1 from User u where u.userAccount.username = :username or u.email = :email"
+            + ")")
+    boolean isUsernameOrEmailExist(String username, String email);
 }
