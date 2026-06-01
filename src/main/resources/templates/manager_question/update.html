@@ -1,0 +1,104 @@
+<section th:replace="shared/header" xmlns:th="http://www.thymeleaf.org"></section>
+
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+<link href="/css/table.css" rel="stylesheet">
+
+<!-- UPDATE Start -->
+<div class="container">
+    <h1>Update Question</h1>
+    <hr>
+    <p class="text-danger" id="error" th:text="${error}"></p>
+    <p class="text-success" id="success" th:text="${success}"></p>
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-3">
+        </div>
+
+        <!-- edit form column -->
+        <div class="col-md-7 personal-info">
+            <form class="form-horizontal" role="form" th:action="${'/ManagerQuestion/Update/'} + ${detail.question.questionId}" id="form" method="POST">
+                <input type="hidden" name="quizId" th:value="${detail.question.quiz.quizId}" />
+                <div class="form-group">
+                    <label class="col-lg-3 control-label"><b>Question:</b></label>
+                    <div class="col-lg-8">
+                        <textarea class="form-control" name="questionName" id="question" required th:text="${detail.question.questionName}"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label"><b>Answer 1:</b></label>
+                    <div class="col-lg-8">
+                        <textarea class="form-control" name="answer1" id="answer1" required th:text="${detail.question.answer1}"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label"><b>Answer 2:</b></label>
+                    <div class="col-lg-8">
+                        <textarea class="form-control" name="answer2" id="answer2" required th:text="${detail.question.answer2}"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label"><b>Answer 3:</b></label>
+                    <div class="col-lg-8">
+                        <textarea class="form-control" name="answer3" id="answer3" th:text="${detail.question.answer3}"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label"><b>Answer 4:</b></label>
+                    <div class="col-lg-8">
+                        <textarea class="form-control" name="answer4" id="answer4" th:text="${detail.question.answer4}"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-3 control-label"><b>Answer Correct:</b></label>
+                    <div class="col-lg-8">
+                        <input class="form-control" name="answerCorrect" id="correct" type="number" required th:value="${detail.answerCorrect}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-8">
+                        <input type="submit" class="btn btn-primary" value="Save Changes">
+                        <span></span>
+                        <a th:href="${'/ManagerQuestion/'} + ${detail.question.quiz.quizId}">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- UPDATE End -->
+
+<script>
+    document.getElementById('form').addEventListener('submit', function (event) {
+        const questionInput = document.getElementById('question');
+        const answer1Input = document.getElementById('answer1');
+        const answer2Input = document.getElementById('answer2');
+        const answer3Input = document.getElementById('answer3');
+        const answer4Input = document.getElementById('answer4');
+        const answerCorrectInput = document.getElementById('correct');
+        const answerCorrect = parseInt(answerCorrectInput.value, 10);
+
+        if (questionInput.value.trim().length === 0) {
+            document.getElementById("error").innerHTML = "You have to input question";
+            event.preventDefault();
+        } else if (answer1Input.value.trim().length === 0 || answer2Input.value.trim().length === 0) {
+            document.getElementById("error").innerHTML = "A question contains at least 2 answers. Answer 1 and answer 2 not empty";
+            event.preventDefault();
+        } else if (answer3Input.value.trim().length === 0 && answer4Input.value.trim().length !== 0) {
+            document.getElementById("error").innerHTML = "if question contains 3 answers, answer 3 not empty";
+            event.preventDefault();
+        } else if (answerCorrect < 1 || answerCorrect > 4) {
+            document.getElementById("error").innerHTML = "Answer correct from 1 to 4";
+            event.preventDefault();
+        } else if (answer3Input.value.trim().length === 0 && answer4Input.value.trim().length === 0 && answerCorrect > 2) {
+            document.getElementById("error").innerHTML = "The question has 2 answers. The correct answer must be 1 or 2";
+            event.preventDefault();
+        } else if (answer3Input.value.trim().length !== 0 && answer4Input.value.trim().length === 0 && answerCorrect > 3) {
+            document.getElementById("error").innerHTML = "The question has 3 answers. The correct answer must be 1,2 or 3";
+            event.preventDefault();
+        }
+    });
+</script>
+
+<section th:replace="shared/footer" xmlns:th="http://www.thymeleaf.org"></section>

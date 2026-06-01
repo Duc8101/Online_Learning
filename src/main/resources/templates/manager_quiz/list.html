@@ -1,0 +1,53 @@
+<section th:replace="shared/header" xmlns:th="http://www.thymeleaf.org"></section>
+
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+<link href="/css/table.css" rel="stylesheet">
+
+<a th:href="${'/ManagerQuiz/Create?lessonId='} + ${lessonId}" class="btn btn-info btn-md ms-2" style="margin:30px auto">
+  <i class="fa fa-user-plus"></i> Create new Quiz
+</a>
+
+<p class="text-error" th:text="${error}"></p>
+<p class="text-success" th:text="${success}"></p>
+<div class="card mb-6 pb-5">
+  <div class="card-header">
+    <i class="fas fa-table me-1"></i>
+    LIST QUIZ
+  </div>
+  <div class="card-body pb-5">
+    <table class="table">
+      <thead>
+      <tr>
+        <th>No</th>
+        <th>Quiz</th>
+        <th>Action</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="quiz, varStatus:${quizzes}">
+        <td th:text="${varStatus.index + 1}"></td>
+        <td th:text="${quiz.quizName}"></td>
+        <td>
+          <a th:href="${'/ManagerQuestion/'} + ${quiz.quizId}">
+            <i class="fa fa-eye fs-5 me-2"></i>
+          </a>
+          <a th:href="${'/ManagerQuiz/Update/'} + ${quiz.quizId}">
+            <i class="fa fa-edit fs-5 me-2"></i>
+          </a>
+          <a th:href="${'/ManagerQuiz/Delete/'} + ${quiz.quizId}" onclick="return confirm('Are you sure you want to delete this item?')">
+            <i class="fa fa-trash fs-5"></i>
+          </a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<a th:href="${'/ManagerLesson/'} + ${courseId}" class="btn btn-info btn-md ms-2" style="margin:30px auto">Back to Lesson</a>
+
+
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="/js/datatables-simple-demo.js"></script>
+
+<section th:replace="shared/footer" xmlns:th="http://www.thymeleaf.org"></section>

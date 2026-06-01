@@ -1,0 +1,65 @@
+<section th:replace="shared/header" xmlns:th="http://www.thymeleaf.org"></section>
+
+<!-- VIEW Start -->
+<div class="container">
+  <h1>View Question</h1>
+  <hr>
+  <div class="row">
+    <!-- left column -->
+    <div class="col-md-3">
+    </div>
+
+    <!-- edit form column -->
+    <div class="col-md-7 personal-info">
+      <form class="form-horizontal" role="form" id="form" method="POST">
+        <div class="form-group">
+          <label class="col-lg-3 control-label"><b>Question:</b></label>
+          <div class="col-lg-8">
+            <textarea readonly class="form-control" name="questionName" id="question" required th:text="${detail.question.questionName}"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label"><b>Answer 1:</b></label>
+          <div class="col-lg-8">
+            <textarea readonly class="form-control" name="answer1" id="answer1" required th:text="${detail.question.answer1}"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label"><b>Answer 2:</b></label>
+          <div class="col-lg-8">
+            <textarea readonly class="form-control" name="answer2" id="answer2" required th:text="${detail.question.answer2}"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label"><b>Answer 3:</b></label>
+          <div class="col-lg-8">
+            <textarea readonly class="form-control" name="answer3" id="answer3" th:text="${detail.question.answer3}"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label"><b>Answer 4:</b></label>
+          <div class="col-lg-8">
+            <textarea readonly class="form-control" name="answer4" id="answer4" th:text="${detail.question.answer4}"></textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-lg-3 control-label"><b>Answer Correct:</b></label>
+          <div class="col-lg-8">
+            <input readonly class="form-control" name="answerCorrect" id="correct" type="number" required th:value="${detail.answerCorrect}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-8">
+            <span></span>
+            <a th:href="${'/ManagerQuestion/'} + ${detail.question.quiz.quizId}">Cancel</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW End -->
+
+<section th:replace="shared/footer" xmlns:th="http://www.thymeleaf.org"></section>

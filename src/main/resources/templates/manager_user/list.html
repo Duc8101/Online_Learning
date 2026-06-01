@@ -1,0 +1,48 @@
+<section th:replace="shared/header" xmlns:th="http://www.thymeleaf.org"></section>
+
+<a class="btn btn-primary" style="margin-top: 50px; margin-left:10px" href="/ManagerUser/Create">Create Teacher</a>
+<br />
+<br />
+<form action="/ManagerUser" style="margin-left:10px">
+  <div class="row">
+    <div class="col-md-4">
+      <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="name" th:value="${name}">
+    </div>
+  </div><br /><br />
+
+  <div class="row">
+    <div class="col-md-4">
+      <button class="btn btn-outline-success" type="submit">Search</button>
+    </div>
+  </div>
+</form>
+
+<section style="margin-top: 50px; margin-left:10px">
+  <div class="row vh-100">
+    <div class="col-lg-12">
+      <table class="table table-info">
+        <thead>
+        <tr>
+          <th scope="col">STT</th>
+          <th scope="col">Username</th>
+          <th scope="col">RoleName</th>
+          <th scope="col">View Detail</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        <tr th:each="user, varStatus:${users}">
+          <td th:text="${varStatus.index + 1}"></td>
+          <td th:text="${user.username}"></td>
+          <td th:text="${user.roleName}"></td>
+          <td><a th:href="${'/ManagerUser/Detail/'} + ${user.userId}">View</a></td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section th:replace="shared/footer" xmlns:th="http://www.thymeleaf.org"></section>

@@ -1,0 +1,48 @@
+<section th:replace="shared/header" xmlns:th="http://www.thymeleaf.org"></section>
+
+<form th:action="${'/ManagerQuiz/Create?lessonId='} + ${lessonId}" method="POST" id="form">
+  <input type="hidden" name="lessonId" th:value="${lessonId}" />
+  <div class="container pt-4 px-4">
+    <div class="row">
+      <h3 class="mb-4 col-12 p-auto text-center ">Create Quiz</h3>
+      <p style="color:red;margin-left: 10px" id="error" th:text="${error}"></p>
+      <p style="color:green;margin-left: 10px" id="success" th:text="${success}"></p>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="bg-light rounded h-100 p-4">
+          <div class="form-floating mb-3">
+            <input name="quizName" type="text" class="form-control" id="floatingQuizName"
+                   placeholder="Quiz Name" required>
+            <label for="floatingQuizName">Quiz Name</label>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="">
+        <button type="submit" class="btn btn-primary mt-5 col-12 py-2 text-center fs-5">Create Quiz</button>
+        <a th:href="${'/ManagerQuiz/'} + ${lessonId}" class="btn btn-info btn-md ms-2" style="margin:30px auto">Cancel</a>
+      </div>
+    </div>
+  </div>
+</form>
+
+<script>
+  const quizNameInput = document.getElementById('floatingQuizName');
+
+  document.getElementById('form').addEventListener('submit', function (event) {
+    if (quizNameInput.value.trim().length === 0) {
+      document.getElementById('error').innerHTML = "You have to input quiz name";
+      event.preventDefault();
+    } else if (quizNameInput.value.trim().length > 50) {
+      document.getElementById('error').innerHTML = "Quiz name max 50 characters";
+      event.preventDefault();
+    }
+  });
+
+</script>
+<section th:replace="shared/footer" xmlns:th="http://www.thymeleaf.org"></section>
