@@ -20,4 +20,7 @@ public interface LessonRepository extends JpaRepository<Lesson, Integer> {
             "LEFT JOIN FETCH l.quizzes " +
             "WHERE l.course.courseId = :courseId")
     List<Lesson> getLessonsForLearnCourse(int courseId);
+
+    @Query("select l.course.courseId from Lesson l where l.lessonId = :lessonId and l.course.deleted = false")
+    Integer getCourseId(int lessonId);
 }
