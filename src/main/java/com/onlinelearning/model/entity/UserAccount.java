@@ -37,7 +37,7 @@ public class UserAccount {
     @Column(nullable = false)
     private int failedLoginCount;
 
-    @Column(nullable = false, columnDefinition = "datetime(0)")
+    @Column(columnDefinition = "datetime(0)")
     private Instant lockoutEndTime;
 
     @Column(nullable = false, columnDefinition = "datetime(0)")
