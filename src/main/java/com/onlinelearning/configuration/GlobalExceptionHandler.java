@@ -1,6 +1,6 @@
 package com.onlinelearning.configuration;
 
-import com.onlinelearning.model.WebResponse;
+import com.onlinelearning.model.ResponseBase;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,7 +12,7 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public WebResponse handleGeneral(Exception ex, HttpServletResponse response) {
+    public ResponseBase handleGeneral(Exception ex, HttpServletResponse response) {
         Map<String, Object> data = new HashMap<>();
         data.put("error", ex.getMessage() + " " + ex);
         data.put("spinner", true);
@@ -20,6 +20,6 @@ public class GlobalExceptionHandler {
         data.put("footer", true);
         data.put("script", true);
         data.put("code", response.getStatus());
-        return new WebResponse().withData(data).withViewName("shared/error");
+        return new ResponseBase().withData(data).withViewName("shared/error");
     }
 }
