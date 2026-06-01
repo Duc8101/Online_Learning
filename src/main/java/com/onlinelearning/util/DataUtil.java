@@ -13,4 +13,16 @@ public class DataUtil {
     public static String trimToNull(String str) {
         return isStringNullOrBlank(str)? null : str.trim();
     }
+
+    public static Long parseToLong(Object obj, Long defaultValue) {
+        if (obj == null) {
+            return defaultValue;
+        }
+
+        try {
+            return Long.parseLong(obj.toString());
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
 }
