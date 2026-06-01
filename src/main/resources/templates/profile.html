@@ -8,7 +8,7 @@
             <li class="list-group-item list-group-item-info list-group-item-action text-center"><a
                     href="/ChangePassword">Change password</a></li>
         </ul>
-        <p class="text-danger" style="text-align: center" th:text="${error}"></p>
+        <p class="text-danger" style="text-align: center" th:text="${error}" id="error"></p>
         <p class="text-success" style="text-align: center" th:text="${success}"></p>
 
     </div>
@@ -74,5 +74,24 @@
 
     </div>
 </div>
+
+<script>
+    const fullNameInput = document.getElementById("fullName");
+    const phoneInput = document.getElementById("phone");
+    const addressInput = document.getElementById("address");
+
+    document.getElementById("form").addEventListener("submit", function (event) {
+        if (fullNameInput.value.trim().length === 0) {
+            document.getElementById("error").innerHTML = "You have to input your name";
+            event.preventDefault();
+        } else if (phoneInput.value.length !== 0 && phoneInput.value.length !== 10) {
+            document.getElementById("error").innerHTML = "Phone must be 10 numbers";
+            event.preventDefault();
+        } else if (addressInput.value.trim().length > 100) {
+            document.getElementById("error").innerHTML = "Address maximum 100 characters";
+            event.preventDefault();
+        }
+    });
+</script>
 
 <section th:replace="shared/footer" xmlns:th="http://www.thymeleaf.org"></section>
