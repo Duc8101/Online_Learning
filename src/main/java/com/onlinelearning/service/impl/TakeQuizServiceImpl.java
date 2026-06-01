@@ -8,7 +8,6 @@ import com.onlinelearning.repository.QuizRepository;
 import com.onlinelearning.service.TakeQuizService;
 import com.onlinelearning.service.common.BaseService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
