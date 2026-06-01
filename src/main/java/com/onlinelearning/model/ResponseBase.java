@@ -8,17 +8,17 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class WebResponse {
+public class ResponseBase {
 
     private String viewName;
     private Map<String, Object> data;
 
-    public WebResponse withData(Map<String, Object> data) {
+    public ResponseBase withData(Map<String, Object> data) {
         this.data = data;
         return this;
     }
 
-    public WebResponse withViewName(String viewName) {
+    public ResponseBase withViewName(String viewName) {
         this.viewName = viewName;
         return this;
     }
