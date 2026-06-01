@@ -1,7 +1,6 @@
 package com.onlinelearning.model.pagination;
 
 import lombok.*;
-import org.springframework.data.domain.Page;
 
 import java.util.ArrayList;
 import java.util.List;
