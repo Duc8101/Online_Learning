@@ -94,12 +94,10 @@
 
 <script>
     const fullNameInput = document.getElementById("fullName");
-    const emailInput = document.getElementById("email");
     const phoneInput = document.getElementById("phone");
     const addressInput = document.getElementById("address");
     const usernameInput = document.getElementById("username");
 
-    const patternEmail = /^[a-zA-Z][\w-]+@([\w]+\.[\w]+|[\w]+\.[\w]{2,}\.[\w]{2,})$/;
     const patternUsername = /^(?=.{6,30}$)(?!.*[_.]{2})[a-zA-Z0-9]+([_.]?[a-zA-Z0-9]+)*$/;
 
     document.getElementById("form").addEventListener("submit", function (event) {
@@ -108,9 +106,6 @@
            event.preventDefault();
        } else if (phoneInput.value.length !== 0 && phoneInput.value.length !== 10) {
            document.getElementById("error").innerHTML = "Phone must be 10 numbers";
-           event.preventDefault();
-       } else if (!patternEmail.test(emailInput.value.trim()) || emailInput.value.trim().length < 6 || emailInput.value.trim().length > 50) {
-           document.getElementById("error").innerHTML = "Email invalid";
            event.preventDefault();
        } else if (addressInput.value.trim().length > 100) {
            document.getElementById("error").innerHTML = "Address maximum 100 characters";
