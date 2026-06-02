@@ -48,4 +48,7 @@ public interface LessonRepository extends JpaRepository<Lesson, Integer> {
     @Modifying
     @Query("update Lesson l set l.lessonName = :lessonName, l.updatedAt = :updatedAt where l.lessonId = :lessonId")
     void updateLesson(String lessonName, Instant updatedAt, int lessonId);
+
+    @Query("select l from Lesson l join fetch l.course where l.lessonId = :lessonId and l.course.deleted = false")
+    Lesson getByLessonId(int lessonId);
 }
