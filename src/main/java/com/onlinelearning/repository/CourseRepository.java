@@ -128,4 +128,10 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
 
     @Query("select new com.onlinelearning.model.dto.response.CheckLessonAndEnrollCourseExist(case when size(c.lessons) > 0 then true else false end, case when size(c.enrollCourses) > 0 then true else false end) from Course c where c.deleted = false and c.courseId = :courseId and c.creator.userId = :teacherId")
     CheckLessonAndEnrollCourseExist checkLessonAndEnrollCourseExist(int courseId, long teacherId);
+
+    @Query("""
+            SELECT EXISTS (
+            SELECT 1 from Course c where c.courseId = :courseId and c.creator.userId = :teacherId and c.deleted = false
+            )""")
+    boolean checkCourseTeacherExist(int courseId, long teacherId);
 }

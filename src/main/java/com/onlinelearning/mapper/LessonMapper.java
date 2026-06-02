@@ -3,6 +3,7 @@ package com.onlinelearning.mapper;
 import com.onlinelearning.model.dto.response.LessonListForLearnCourseResponseDto;
 import com.onlinelearning.model.dto.response.PdfListResponseDto;
 import com.onlinelearning.model.dto.response.VideoListResponseDto;
+import com.onlinelearning.model.dto.response.ViewLessonResponseDto;
 import com.onlinelearning.model.entity.Lesson;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,4 +19,10 @@ public interface LessonMapper {
     LessonListForLearnCourseResponseDto toLessonListForLearnCourseResponseDto(Lesson lesson);
 
     List<LessonListForLearnCourseResponseDto> toLessonListForLearnCourseResponseDTOs(List<Lesson> lessons);
+
+    @Mapping(target = "videos", expression = "java(lesson.getVideos().stream().map(v -> new VideoListResponseDto(v.getVideoId(), v.getVideoName(), v.getFileVideo(), v.getLesson().getLessonId())).toList())")
+    @Mapping(target = "pdfs", expression = "java(lesson.getPdfs().stream().map(p -> new PdfListResponseDto(p.getPdfId(), p.getPdfName(), p.getFilePdf(), p.getLesson().getLessonId())).toList())")
+    ViewLessonResponseDto toViewLessonResponseDto(Lesson lesson);
+
+    List<ViewLessonResponseDto> toViewLessonResponseDTOs(List<Lesson> lessons);
 }
