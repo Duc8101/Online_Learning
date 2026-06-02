@@ -71,6 +71,11 @@ public class ManagerLessonServiceImpl extends BaseService implements ManagerLess
         Map<String, Object> data = new HashMap<>();
 
         Course course = courseRepository.getCourseByCourseId(DTO.getCourseId());
+        if (course == null || course.isDeleted()) {
+            data.put("error", "Course not found or course might be deleted");
+            return new ResponseBase("shared/error", data);
+        }
+
         setData(data, DTO.getCourseId(), null, null, null, null);
 
         if (DTO.getLessonName().trim().isEmpty()) {
