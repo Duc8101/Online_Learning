@@ -1,5 +1,8 @@
 package com.onlinelearning.repository;
 
+import com.onlinelearning.model.dto.response.QuestionDetailResponseDto;
+import com.onlinelearning.model.dto.response.QuestionForDeleteQuestionResponseDto;
+import com.onlinelearning.model.dto.response.QuestionListForManagerQuestionResponseDto;
 import com.onlinelearning.model.dto.response.QuestionListForStartQuizResponseDto;
 import com.onlinelearning.model.entity.Question;
 import org.springframework.data.domain.Pageable;
@@ -23,4 +26,16 @@ public interface QuestionRepository extends JpaRepository<Question, Integer> {
     @Query("select q.answerCorrect from Question q where q.quiz.quizId = :quizId and exists (\n"
             + " select 1 from StartQuiz sq where sq.question = q and sq.student.userId = :studentId)")
     List<Integer> getAnswersCorrect(int quizId, long studentId);
+
+    @Query("""
+            select new com.onlinelearning.model.dto.response.QuestionListForManagerQuestionResponseDto(q.questionId, q.questionName, q.quiz.quizId) from Question q
+            where q.quiz.quizId = :quizId
+            order by CASE WHEN q.updatedAt IS NULL THEN q.createdAt ELSE q.updatedAt END desc""")
+    List<QuestionListForManagerQuestionResponseDto> getQuestionsForManagerQuestion(int quizId);
+
+    @Query("select new com.onlinelearning.model.dto.response.QuestionDetailResponseDto(q, q.quiz.lesson.course.creator.userId) from Question q join fetch q.quiz where q.questionId = :questionId and q.quiz.lesson.course.deleted = false")
+    QuestionDetailResponseDto getQuestionDetail(int questionId);
+
+    @Query("select new com.onlinelearning.model.dto.response.QuestionForDeleteQuestionResponseDto(q.quiz.lesson.course.courseId, q.quiz.quizId) from Question q where q.questionId = :questionId")
+    QuestionForDeleteQuestionResponseDto getQuestionInfoForDeleteQuestion(int questionId);
 }

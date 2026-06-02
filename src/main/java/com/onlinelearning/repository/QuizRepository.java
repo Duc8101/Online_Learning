@@ -42,4 +42,10 @@ public interface QuizRepository extends JpaRepository<Quiz, Integer> {
     @Modifying
     @Query("update Quiz q set q.quizName = :quizName, q.updatedAt = :updatedAt where q.quizId = :quizId")
     void updateQuiz(String quizName, Instant updatedAt, int quizId);
+
+    @Query("SELECT q.lesson.course.creator.userId FROM Quiz q where q.quizId = :quizId and q.lesson.course.deleted = false")
+    Long getCreatorId(int quizId);
+
+    @Query("select q from Quiz q where q.quizId = :quizId and q.lesson.course.deleted = false")
+    Quiz getQuizForManagerQuestion(int quizId);
 }
