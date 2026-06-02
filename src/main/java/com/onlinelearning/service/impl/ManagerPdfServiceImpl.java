@@ -88,9 +88,7 @@ public class ManagerPdfServiceImpl extends BaseService implements ManagerPdfServ
 
         pdf.setPdfName(DTO.getPdfName().trim());
         pdfRepository.updatePdf(pdf.getPdfName(), pdf.getFilePdf(), Instant.now(), pdfId);
-
-        data.put("pdf", DTO.getFilePdf().trim().isEmpty() ? pdf.getFilePdf() : DTO.getFilePdf().trim());
-        return new ResponseBase(String.format("redirect:/ManagerLesson/%d?lessonId=%d&name=%s&pdf=%s", pdf.getCourseId(), pdf.getLessonId(), DTO.getPdfName().trim(), pdf), data);
+        return new ResponseBase(String.format("redirect:/ManagerLesson/%d?lessonId=%d&name=%s&pdf=%s", pdf.getCourseId(), pdf.getLessonId(), DTO.getPdfName().trim(), DTO.getFilePdf().trim().isEmpty() ? pdf.getFilePdf() : DTO.getFilePdf().trim()), data);
     }
 
     @Override
