@@ -35,7 +35,7 @@ public class ManagerVideoServiceImpl extends BaseService implements ManagerVideo
     final LessonMapper lessonMapper;
     final VideoMapper videoMapper;
 
-    void setData(Map<String, Object> data, int courseId, String fileVideo,  String name, Integer lessonId) {
+    private void setData(Map<String, Object> data, int courseId, String fileVideo,  String name, Integer lessonId) {
         setValueForHeaderFooter(data, false, true, false, false);
 
         List<ViewLessonResponseDto> lessons = lessonMapper.toViewLessonResponseDTOs(lessonRepository.getLessonsForManagerAndViewLesson(courseId));

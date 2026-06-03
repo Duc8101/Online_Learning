@@ -99,7 +99,7 @@ public class ManagerQuestionServiceImpl extends BaseService implements ManagerQu
         return new ResponseBase("manager_question/create", data);
     }
 
-    ResponseBase getResponseForDetailUpdate(int questionId, long userId, String viewName) {
+    private ResponseBase getResponseForDetailUpdate(int questionId, long userId, String viewName) {
         Map<String, Object> data = new HashMap<>();
         setValueForHeaderFooter(data, true, true, true, true);
 

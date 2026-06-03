@@ -47,7 +47,7 @@ public class ManagerLessonServiceImpl extends BaseService implements ManagerLess
         return new ResponseBase("manager_lesson/list", data);
     }
 
-    void setData(Map<String, Object> data, int courseId, String fileVideo, String name, String filePdf, Integer lessonId) {
+    private void setData(Map<String, Object> data, int courseId, String fileVideo, String name, String filePdf, Integer lessonId) {
         setValueForHeaderFooter(data, false, true, false, false);
         List<ViewLessonResponseDto> lessons = lessonMapper.toViewLessonResponseDTOs(lessonRepository.getLessonsForManagerAndViewLesson(courseId));
 

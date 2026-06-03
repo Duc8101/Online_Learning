@@ -33,7 +33,7 @@ public class ManagerPdfServiceImpl extends BaseService implements ManagerPdfServ
     final LessonMapper lessonMapper;
     final PdfMapper pdfMapper;
 
-    void setData(Map<String, Object> data, int courseId, String name, String pdf, Integer lessonId) {
+    private void setData(Map<String, Object> data, int courseId, String name, String pdf, Integer lessonId) {
         setValueForHeaderFooter(data, false, true, false, false);
         List<ViewLessonResponseDto> lessons = lessonMapper.toViewLessonResponseDTOs(lessonRepository.getLessonsForManagerAndViewLesson(courseId));
 
