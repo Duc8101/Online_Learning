@@ -1,6 +1,7 @@
 package com.onlinelearning.repository;
 
 import com.onlinelearning.model.dto.response.UserForHomePageResponseDto;
+import com.onlinelearning.model.dto.response.UserListNotAdminResponseDto;
 import com.onlinelearning.model.dto.response.UserProfileResponseDto;
 import com.onlinelearning.model.entity.User;
 import jakarta.transaction.Transactional;
@@ -38,13 +39,18 @@ public interface UserRepository extends JpaRepository<User, Long> {
             + ")")
     boolean isUsernameOrEmailExist(String username, String email);
 
-    @Query("select exists (\n"
-            + "SELECT 1 from User u where u.email = :email and u.userId <> :userId\n"
-            + ")")
+    @Query("""
+            select exists (
+            SELECT 1 from User u where u.email = :email and u.userId <> :userId
+            )""")
     boolean isEmailExist(String email, long userId);
 
     @Transactional
     @Modifying
     @Query("UPDATE User u SET u.fullName = :fullName, u.phone = :phone, u.email = :email, u.address = :address, u.gender = :gender, u.image = :image, u.updatedAt = :updatedAt where u.userId = :userId")
     void updateProfile(String fullName, String phone, String email, String address, String gender, String image, Instant updatedAt, long userId);
+
+    @Query("SELECT new com.onlinelearning.model.dto.response.UserListNotAdminResponseDto(u.userId, u.userAccount.username, u.userAccount.role.roleId, u.userAccount.role.roleName) from User u\n"
+            + "where u.userAccount.role.roleId <> :roleId and ((:name is null or :name = '') or u.userAccount.username like CONCAT('%', :name, '%'))")
+    List<UserListNotAdminResponseDto> getUsersNotAdmin(int roleId, String name);
 }
