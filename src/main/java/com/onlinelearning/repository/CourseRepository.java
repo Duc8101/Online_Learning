@@ -134,4 +134,10 @@ public interface CourseRepository extends JpaRepository<Course, Integer> {
             SELECT 1 from Course c where c.courseId = :courseId and c.creator.userId = :teacherId and c.deleted = false
             )""")
     boolean checkCourseTeacherExist(int courseId, long teacherId);
+
+    @Query("""
+            SELECT EXISTS (
+            SELECT 1 from Course c where c.courseId = :courseId and c.deleted = false
+            )""")
+    boolean isCourseExist(int courseId);
 }
