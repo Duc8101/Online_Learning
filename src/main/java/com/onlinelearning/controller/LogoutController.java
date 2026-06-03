@@ -4,7 +4,9 @@ import com.onlinelearning.model.ResponseBase;
 import com.onlinelearning.service.LogoutService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/Logout")
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class LogoutController {
 
-    private final LogoutService logoutService;
+    final LogoutService logoutService;
 
     @GetMapping
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {

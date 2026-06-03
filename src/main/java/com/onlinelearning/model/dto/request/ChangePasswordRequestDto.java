@@ -1,13 +1,16 @@
 package com.onlinelearning.model.dto.request;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ChangePasswordRequestDto {
 
-    private String currentPassword;
-    private String newPassword;
-    private String confirmPassword;
+    String currentPassword;
+    String newPassword;
+    String confirmPassword;
 }

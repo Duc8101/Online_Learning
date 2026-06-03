@@ -13,7 +13,9 @@ import com.onlinelearning.repository.*;
 import com.onlinelearning.service.CoursesService;
 import com.onlinelearning.service.common.BaseService;
 import jakarta.servlet.http.HttpSession;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -24,17 +26,18 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CoursesServiceImpl extends BaseService implements CoursesService {
 
-    private final CategoryRepository categoryRepository;
-    private final CourseRepository courseRepository;
-    private final LessonRepository lessonRepository;
-    private final UserRepository userRepository;
-    private final EnrollCourseRepository enrollCourseRepository;
-    private final LessonMapper lessonMapper;
-    private final VideoRepository videoRepository;
+    final CategoryRepository categoryRepository;
+    final CourseRepository courseRepository;
+    final LessonRepository lessonRepository;
+    final UserRepository userRepository;
+    final EnrollCourseRepository enrollCourseRepository;
+    final LessonMapper lessonMapper;
+    final VideoRepository videoRepository;
 
-    private static final int COURSES_PAGE = 6;
+    static final int COURSES_PAGE = 6;
 
     @Override
     public ResponseBase list(Integer categoryId, Boolean orderBy, Integer page, HttpSession session) {

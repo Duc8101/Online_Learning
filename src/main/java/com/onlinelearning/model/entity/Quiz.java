@@ -2,6 +2,7 @@ package com.onlinelearning.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
@@ -14,31 +15,32 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Quiz {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer quizId;
+    Integer quizId;
 
     @Column(nullable = false, columnDefinition = "nvarchar(50)")
-    private String quizName;
+    String quizName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_id", nullable = false)
-    private Lesson lesson;
+    Lesson lesson;
 
     @Column(nullable = false, columnDefinition = "datetime(0)")
     @CreationTimestamp
-    private Instant createdAt;
+    Instant createdAt;
 
     @Column(columnDefinition = "datetime(0)")
-    private Instant updatedAt;
+    Instant updatedAt;
 
     @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
-    private Set<Question> questions = new HashSet<>();
+    Set<Question> questions = new HashSet<>();
 
     @OneToMany(mappedBy = "quiz", fetch = FetchType.LAZY)
-    private Set<Result> results = new HashSet<>();
+    Set<Result> results = new HashSet<>();
 
     @PreUpdate
     public void preUpdate() {

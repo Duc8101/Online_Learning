@@ -1,12 +1,15 @@
 package com.onlinelearning.model.dto.request;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PdfUpdateRequestDto {
 
-    private String pdfName;
-    private String filePdf;
+    String pdfName;
+    String filePdf;
 }

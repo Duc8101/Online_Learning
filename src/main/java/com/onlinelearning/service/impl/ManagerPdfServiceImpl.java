@@ -13,7 +13,9 @@ import com.onlinelearning.repository.LessonRepository;
 import com.onlinelearning.repository.PdfRepository;
 import com.onlinelearning.service.ManagerPdfService;
 import com.onlinelearning.service.common.BaseService;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -23,14 +25,15 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ManagerPdfServiceImpl extends BaseService implements ManagerPdfService {
 
-    private final LessonRepository lessonRepository;
-    private final PdfRepository pdfRepository;
-    private final LessonMapper lessonMapper;
-    private final PdfMapper pdfMapper;
+    final LessonRepository lessonRepository;
+    final PdfRepository pdfRepository;
+    final LessonMapper lessonMapper;
+    final PdfMapper pdfMapper;
 
-    private void setData(Map<String, Object> data, int courseId, String name, String pdf, Integer lessonId) {
+    void setData(Map<String, Object> data, int courseId, String name, String pdf, Integer lessonId) {
         setValueForHeaderFooter(data, false, true, false, false);
         List<ViewLessonResponseDto> lessons = lessonMapper.toViewLessonResponseDTOs(lessonRepository.getLessonsForManagerAndViewLesson(courseId));
 

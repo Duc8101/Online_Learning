@@ -1,6 +1,7 @@
 package com.onlinelearning.model;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.Map;
 
@@ -8,10 +9,11 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ResponseBase {
 
-    private String viewName;
-    private Map<String, Object> data;
+    String viewName;
+    Map<String, Object> data;
 
     public ResponseBase withData(Map<String, Object> data) {
         this.data = data;

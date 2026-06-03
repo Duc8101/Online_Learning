@@ -2,6 +2,7 @@ package com.onlinelearning.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
@@ -15,44 +16,45 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Course implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer courseId;
+    Integer courseId;
 
     @Column(nullable = false)
-    private String courseName;
+    String courseName;
 
     @Column(nullable = false)
-    private String image;
+    String image;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category;
+    Category category;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", nullable = false)
-    private User creator;
+    User creator;
 
     @Column
-    private String description;
+    String description;
 
     @Column(nullable = false, columnDefinition = "datetime(0)")
     @CreationTimestamp
-    private Instant createdAt;
+    Instant createdAt;
 
     @Column(columnDefinition = "datetime(0)")
-    private Instant updatedAt;
+    Instant updatedAt;
 
     @Column(name = "is_deleted", nullable = false)
-    private boolean deleted;
+    boolean deleted;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
-    private Set<EnrollCourse> enrollCourses = new HashSet<>();
+    Set<EnrollCourse> enrollCourses = new HashSet<>();
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
-    private Set<Lesson> lessons = new HashSet<>();
+    Set<Lesson> lessons = new HashSet<>();
 
     @PreUpdate
     public void preUpdate() {

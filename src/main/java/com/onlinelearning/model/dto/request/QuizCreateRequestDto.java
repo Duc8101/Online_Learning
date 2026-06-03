@@ -1,12 +1,15 @@
 package com.onlinelearning.model.dto.request;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class QuizCreateRequestDto {
 
-    private String quizName;
-    private int lessonId;
+    String quizName;
+    int lessonId;
 }

@@ -7,7 +7,9 @@ import com.onlinelearning.repository.LessonRepository;
 import com.onlinelearning.repository.QuizRepository;
 import com.onlinelearning.service.TakeQuizService;
 import com.onlinelearning.service.common.BaseService;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -16,11 +18,12 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class TakeQuizServiceImpl extends BaseService implements TakeQuizService {
 
-    private final LessonRepository lessonRepository;
-    private final QuizRepository quizRepository;
-    private final EnrollCourseRepository enrollCourseRepository;
+    final LessonRepository lessonRepository;
+    final QuizRepository quizRepository;
+    final EnrollCourseRepository enrollCourseRepository;
 
     @Override
     public ResponseBase takeQuiz(int lessonId, long userId) {

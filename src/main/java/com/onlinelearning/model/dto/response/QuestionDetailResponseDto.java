@@ -1,20 +1,19 @@
 package com.onlinelearning.model.dto.response;
 
 import com.onlinelearning.model.entity.Question;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class QuestionDetailResponseDto {
 
-    private Question question;
-    private int answerCorrect;
-    private long creatorId;
+    Question question;
+    int answerCorrect;
+    long creatorId;
 
     public QuestionDetailResponseDto(Question question, long creatorId) {
         this.question = question;

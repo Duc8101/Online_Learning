@@ -13,7 +13,9 @@ import com.onlinelearning.repository.QuizRepository;
 import com.onlinelearning.service.ManagerQuizService;
 import com.onlinelearning.service.common.BaseService;
 import jakarta.persistence.Tuple;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -23,11 +25,12 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ManagerQuizServiceImpl extends BaseService implements ManagerQuizService {
 
-    private final LessonRepository lessonRepository;
-    private final QuizRepository quizRepository;
-    private final CourseRepository courseRepository;
+    final LessonRepository lessonRepository;
+    final QuizRepository quizRepository;
+    final CourseRepository courseRepository;
 
     @Override
     public ResponseBase list(int lessonId, long userId) {

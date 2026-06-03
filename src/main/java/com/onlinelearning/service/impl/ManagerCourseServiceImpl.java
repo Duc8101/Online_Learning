@@ -15,7 +15,9 @@ import com.onlinelearning.repository.*;
 import com.onlinelearning.service.ManagerCourseService;
 import com.onlinelearning.service.common.BaseService;
 import com.onlinelearning.util.DataUtil;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -27,16 +29,17 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ManagerCourseServiceImpl extends BaseService implements ManagerCourseService {
 
-    private final CourseRepository courseRepository;
-    private final CategoryRepository categoryRepository;
-    private final UserRepository userRepository;
-    private final LessonRepository lessonRepository;
-    private final EnrollCourseRepository enrollCourseRepository;
-    private final CourseMapper courseMapper;
+    final CourseRepository courseRepository;
+    final CategoryRepository categoryRepository;
+    final UserRepository userRepository;
+    final LessonRepository lessonRepository;
+    final EnrollCourseRepository enrollCourseRepository;
+    final CourseMapper courseMapper;
 
-    private static final int MANAGER_COURSE_LIST_PAGE = 3;
+    static final int MANAGER_COURSE_LIST_PAGE = 3;
 
     @Override
     public ResponseBase list(int page, long userId) {
@@ -68,7 +71,7 @@ public class ManagerCourseServiceImpl extends BaseService implements ManagerCour
         return new ResponseBase("manager_course/list", data);
     }
 
-    private void setDataCategories(Map<String, Object> data) {
+    void setDataCategories(Map<String, Object> data) {
         List<CategoryListResponseDto> categories = categoryRepository.getAllCategories();
         data.put("categories", categories);
     }

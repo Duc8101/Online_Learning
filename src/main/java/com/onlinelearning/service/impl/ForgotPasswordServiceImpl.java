@@ -6,7 +6,9 @@ import com.onlinelearning.repository.UserRepository;
 import com.onlinelearning.service.ForgotPasswordService;
 import com.onlinelearning.service.common.BaseService;
 import com.onlinelearning.util.UserUtil;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -15,11 +17,12 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ForgotPasswordServiceImpl extends BaseService implements ForgotPasswordService {
 
-    private final UserRepository userRepository;
-    private final UserUtil userUtil;
-    private final UserAccountRepository userAccountRepository;
+    final UserRepository userRepository;
+    final UserUtil userUtil;
+    final UserAccountRepository userAccountRepository;
 
     @Override
     public ResponseBase forgotPassword() {

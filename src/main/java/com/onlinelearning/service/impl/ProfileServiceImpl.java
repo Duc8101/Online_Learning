@@ -9,7 +9,9 @@ import com.onlinelearning.service.ProfileService;
 import com.onlinelearning.service.common.BaseService;
 import com.onlinelearning.util.DataUtil;
 import jakarta.servlet.http.HttpSession;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -20,9 +22,10 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProfileServiceImpl extends BaseService implements ProfileService {
 
-    private final UserRepository userRepository;
+    final UserRepository userRepository;
 
     @Override
     public ResponseBase profile() {

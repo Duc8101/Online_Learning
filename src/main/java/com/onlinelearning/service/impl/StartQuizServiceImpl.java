@@ -10,7 +10,9 @@ import com.onlinelearning.repository.*;
 import com.onlinelearning.service.StartQuizService;
 import com.onlinelearning.service.common.BaseService;
 import jakarta.persistence.Tuple;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,16 +24,17 @@ import java.util.Objects;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class StartQuizServiceImpl extends BaseService implements StartQuizService {
 
-    private final QuizRepository quizRepository;
-    private final EnrollCourseRepository enrollCourseRepository;
-    private final ResultRepository resultRepository;
-    private final StartQuizRepository startQuizRepository;
-    private final QuestionRepository questionRepository;
-    private final UserRepository userRepository;
+    final QuizRepository quizRepository;
+    final EnrollCourseRepository enrollCourseRepository;
+    final ResultRepository resultRepository;
+    final StartQuizRepository startQuizRepository;
+    final QuestionRepository questionRepository;
+    final UserRepository userRepository;
 
-    private void setAnswers(Map<String, Object> data) {
+    void setAnswers(Map<String, Object> data) {
         data.put("answer1", Answer.ANSWER1.getValue());
         data.put("answer2", Answer.ANSWER2.getValue());
         data.put("answer3", Answer.ANSWER3.getValue());
@@ -96,7 +99,7 @@ public class StartQuizServiceImpl extends BaseService implements StartQuizServic
         return finish(DTO, userId);
     }
 
-    private ResponseBase next(StartQuizRequestDto DTO, int minutes, int questionNo, int seconds, long userId) {
+    ResponseBase next(StartQuizRequestDto DTO, int minutes, int questionNo, int seconds, long userId) {
         Map<String, Object> data = new HashMap<>();
         List<QuestionListForStartQuizResponseDto> questions = questionRepository.getQuestionsForStartQuiz(DTO.getQuizId()
                 , PageRequest.of(questionNo, 1));
@@ -109,7 +112,7 @@ public class StartQuizServiceImpl extends BaseService implements StartQuizServic
         return new ResponseBase("start_quiz", data);
     }
 
-    private void setDataForPreviousNext(Map<String, Object> data, StartQuizRequestDto DTO, List<QuestionListForStartQuizResponseDto> questions, int minutes, int seconds, long userId) {
+    void setDataForPreviousNext(Map<String, Object> data, StartQuizRequestDto DTO, List<QuestionListForStartQuizResponseDto> questions, int minutes, int seconds, long userId) {
         String startQuizId = startQuizRepository.getStartQuizId(DTO.getQuestionId(), userId);
 
         // if not answer current question yet
@@ -142,7 +145,7 @@ public class StartQuizServiceImpl extends BaseService implements StartQuizServic
         setAnswers(data);
     }
 
-    private ResponseBase previous(StartQuizRequestDto DTO, int minutes, int questionNo, int seconds, long userId) {
+    ResponseBase previous(StartQuizRequestDto DTO, int minutes, int questionNo, int seconds, long userId) {
         Map<String, Object> data = new HashMap<>();
         List<QuestionListForStartQuizResponseDto> questions = questionRepository.getQuestionsForStartQuiz(DTO.getQuizId()
                 , PageRequest.of(questionNo - 2, 1));
@@ -152,7 +155,7 @@ public class StartQuizServiceImpl extends BaseService implements StartQuizServic
         return new ResponseBase("start_quiz", data);
     }
 
-    private ResponseBase finish(StartQuizRequestDto DTO, long userId) {
+    ResponseBase finish(StartQuizRequestDto DTO, long userId) {
         Map<String, Object> data = new HashMap<>();
         String startQuizId = startQuizRepository.getStartQuizId(DTO.getQuestionId(), userId);
 

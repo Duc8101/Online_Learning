@@ -5,9 +5,10 @@ import com.onlinelearning.model.dto.response.ResultDetailResponseDto;
 import com.onlinelearning.repository.ResultRepository;
 import com.onlinelearning.service.ResultService;
 import com.onlinelearning.service.common.BaseService;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -16,9 +17,10 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ResultServiceImpl extends BaseService implements ResultService {
 
-    private final ResultRepository resultRepository;
+    final ResultRepository resultRepository;
 
     @Override
     public ResponseBase result(int quizId, long userId) {

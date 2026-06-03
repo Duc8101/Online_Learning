@@ -1,6 +1,7 @@
 package com.onlinelearning.model.pagination;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,15 +11,16 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PagingRepo<T> {
 
-    private int currentPage;
-    private String preUrl;
-    private String nextUrl;
-    private String firstUrl;
-    private String lastUrl;
-    private List<T> content = new ArrayList<>();
-    private int numberPage;
+    int currentPage;
+    String preUrl;
+    String nextUrl;
+    String firstUrl;
+    String lastUrl;
+    List<T> content = new ArrayList<>();
+    int numberPage;
 
     public PagingRepo(int currentPage, int numberPage) {
         this.currentPage = currentPage;

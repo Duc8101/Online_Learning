@@ -15,7 +15,9 @@ import com.onlinelearning.repository.QuizRepository;
 import com.onlinelearning.service.ManagerQuestionService;
 import com.onlinelearning.service.common.BaseService;
 import jakarta.persistence.Tuple;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -24,12 +26,13 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ManagerQuestionServiceImpl extends BaseService implements ManagerQuestionService {
 
-    private final QuizRepository quizRepository;
-    private final QuestionRepository questionRepository;
-    private final CourseRepository courseRepository;
-    private final QuestionMapper questionMapper;
+    final QuizRepository quizRepository;
+    final QuestionRepository questionRepository;
+    final CourseRepository courseRepository;
+    final QuestionMapper questionMapper;
 
     @Override
     public ResponseBase list(int quizId, long userId) {
@@ -96,7 +99,7 @@ public class ManagerQuestionServiceImpl extends BaseService implements ManagerQu
         return new ResponseBase("manager_question/create", data);
     }
 
-    private ResponseBase getResponseForDetailUpdate(int questionId, long userId, String viewName) {
+    ResponseBase getResponseForDetailUpdate(int questionId, long userId, String viewName) {
         Map<String, Object> data = new HashMap<>();
         setValueForHeaderFooter(data, true, true, true, true);
 

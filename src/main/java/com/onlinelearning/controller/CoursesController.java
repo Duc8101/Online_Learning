@@ -4,7 +4,9 @@ import com.onlinelearning.model.ResponseBase;
 import com.onlinelearning.model.dto.response.UserProfileResponseDto;
 import com.onlinelearning.service.CoursesService;
 import jakarta.servlet.http.HttpSession;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/Courses")
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CoursesController {
 
-    private final CoursesService coursesService;
+    final CoursesService coursesService;
 
     @GetMapping("")
     public ModelAndView list(Integer categoryId, Boolean orderBy, Integer page, HttpSession session) {

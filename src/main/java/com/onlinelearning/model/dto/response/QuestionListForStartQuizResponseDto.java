@@ -1,22 +1,21 @@
 package com.onlinelearning.model.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class QuestionListForStartQuizResponseDto {
 
-    private int questionId;
-    private String questionName;
-    private int quizId;
-    private String answer1;
-    private String answer2;
-    private String answer3;
-    private String answer4;
-    private Integer chosenAnswer;
+    int questionId;
+    String questionName;
+    int quizId;
+    String answer1;
+    String answer2;
+    String answer3;
+    String answer4;
+    Integer chosenAnswer;
 }

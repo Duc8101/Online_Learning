@@ -1,18 +1,17 @@
 package com.onlinelearning.model.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class QuizUpdateResponseDto {
 
-    private int quizId;
-    private String quizName;
-    private int lessonId;
-    private long creatorId;
+    int quizId;
+    String quizName;
+    int lessonId;
+    long creatorId;
 }

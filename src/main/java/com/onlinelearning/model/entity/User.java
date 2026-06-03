@@ -2,6 +2,7 @@ package com.onlinelearning.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
@@ -16,54 +17,55 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    Long userId;
 
     @Column(nullable = false)
-    private String fullName;
+    String fullName;
 
     @Column(columnDefinition = "char(10)")
-    private String phone;
+    String phone;
 
     @Column(nullable = false)
-    private String image;
+    String image;
 
     @Column(columnDefinition = "nvarchar(100)")
-    private String address;
+    String address;
 
     @Column(nullable = false, columnDefinition = "varchar(50)", unique = true)
-    private String email;
+    String email;
 
     @Column(nullable = false)
-    private String gender;
+    String gender;
 
     @Column(nullable = false, columnDefinition = "datetime(0)")
     @CreationTimestamp
-    private Instant createdAt;
+    Instant createdAt;
 
     @Column(columnDefinition = "datetime(0)")
-    private Instant updatedAt;
+    Instant updatedAt;
 
     @OneToOne(mappedBy = "user")
-    private UserAccount userAccount;
+    UserAccount userAccount;
 
     @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
-    private Set<Course> courses = new HashSet<>();
+    Set<Course> courses = new HashSet<>();
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    private Set<EnrollCourse> enrollCourses = new HashSet<>();
+    Set<EnrollCourse> enrollCourses = new HashSet<>();
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    private Set<Result> results = new HashSet<>();
+    Set<Result> results = new HashSet<>();
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    private Set<StartQuiz> startQuizzes = new HashSet<>();
+    Set<StartQuiz> startQuizzes = new HashSet<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<UserClient> userClients = new HashSet<>();
+    Set<UserClient> userClients = new HashSet<>();
 
     @PreUpdate
     public void preUpdate() {

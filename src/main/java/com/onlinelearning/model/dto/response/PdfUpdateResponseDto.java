@@ -1,19 +1,18 @@
 package com.onlinelearning.model.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class PdfUpdateResponseDto {
 
-    private int pdfId;
-    private String pdfName;
-    private String filePdf;
-    private int lessonId;
-    private int courseId;
+    int pdfId;
+    String pdfName;
+    String filePdf;
+    int lessonId;
+    int courseId;
 }

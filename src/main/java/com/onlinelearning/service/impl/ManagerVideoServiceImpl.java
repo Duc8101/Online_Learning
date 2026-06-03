@@ -14,7 +14,9 @@ import com.onlinelearning.repository.LessonRepository;
 import com.onlinelearning.repository.VideoRepository;
 import com.onlinelearning.service.ManagerVideoService;
 import com.onlinelearning.service.common.BaseService;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +27,15 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ManagerVideoServiceImpl extends BaseService implements ManagerVideoService {
 
-    private final LessonRepository lessonRepository;
-    private final VideoRepository videoRepository;
-    private final LessonMapper lessonMapper;
-    private final VideoMapper videoMapper;
+    final LessonRepository lessonRepository;
+    final VideoRepository videoRepository;
+    final LessonMapper lessonMapper;
+    final VideoMapper videoMapper;
 
-    private void setData(Map<String, Object> data, int courseId, String fileVideo,  String name, Integer lessonId) {
+    void setData(Map<String, Object> data, int courseId, String fileVideo,  String name, Integer lessonId) {
         setValueForHeaderFooter(data, false, true, false, false);
 
         List<ViewLessonResponseDto> lessons = lessonMapper.toViewLessonResponseDTOs(lessonRepository.getLessonsForManagerAndViewLesson(courseId));

@@ -1,13 +1,16 @@
 package com.onlinelearning.model.dto.request;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class StartQuizRequestDto {
 
-    private int questionId;
-    private int quizId;
-    private Integer answer;
+    int questionId;
+    int quizId;
+    Integer answer;
 }

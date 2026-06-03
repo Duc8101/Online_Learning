@@ -1,14 +1,17 @@
 package com.onlinelearning.model.dto.request;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CourseCreateUpdateRequestDto {
 
-    private String courseName;
-    private String image;
-    private int categoryId;
-    private String description;
+    String courseName;
+    String image;
+    int categoryId;
+    String description;
 }

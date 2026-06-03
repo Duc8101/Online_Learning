@@ -7,7 +7,9 @@ import com.onlinelearning.model.pagination.PagingRepo;
 import com.onlinelearning.repository.CourseRepository;
 import com.onlinelearning.service.MyCourseService;
 import com.onlinelearning.service.common.BaseService;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,12 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MyCourseServiceImpl extends BaseService implements MyCourseService {
 
-    private final CourseRepository courseRepository;
+    final CourseRepository courseRepository;
 
-    private static final int MY_COURSE_PAGE = 6;
+    static final int MY_COURSE_PAGE = 6;
 
     @Override
     public ResponseBase myCourse(Integer page, long userId) {

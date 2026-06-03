@@ -1,8 +1,10 @@
 package com.onlinelearning.model.entity;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,15 +12,16 @@ import java.util.Set;
 @Entity
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer roleId;
+    Integer roleId;
 
     @Column(nullable = false)
-    private String roleName;
+    String roleName;
 
     @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
-    private Set<UserAccount> userAccounts = new HashSet<>();
+    Set<UserAccount> userAccounts = new HashSet<>();
 }

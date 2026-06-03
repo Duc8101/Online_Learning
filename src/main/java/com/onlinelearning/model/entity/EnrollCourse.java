@@ -2,6 +2,7 @@ package com.onlinelearning.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -14,21 +15,22 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EnrollCourse implements Serializable {
 
     @Id
     @UuidGenerator
-    private String enrollCourseId;
+    String enrollCourseId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", nullable = false)
-    private Course course;
+    Course course;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", nullable = false)
-    private User student;
+    User student;
 
     @Column(nullable = false, columnDefinition = "datetime(0)")
     @CreationTimestamp
-    private Instant createdAt;
+    Instant createdAt;
 }

@@ -1,16 +1,15 @@
 package com.onlinelearning.model.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CheckLessonAndEnrollCourseExist {
 
-    private boolean lessonExist;
-    private boolean enrollCourseExist;
+    boolean lessonExist;
+    boolean enrollCourseExist;
 }

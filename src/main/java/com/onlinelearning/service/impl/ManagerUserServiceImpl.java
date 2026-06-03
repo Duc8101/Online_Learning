@@ -17,7 +17,9 @@ import com.onlinelearning.service.ManagerUserService;
 import com.onlinelearning.service.common.BaseService;
 import com.onlinelearning.util.UserUtil;
 import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -27,13 +29,14 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ManagerUserServiceImpl extends BaseService implements ManagerUserService {
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final UserUtil userUtil;
-    private final UserMapper userMapper;
-    private final UserAccountRepository userAccountRepository;
+    final UserRepository userRepository;
+    final RoleRepository roleRepository;
+    final UserUtil userUtil;
+    final UserMapper userMapper;
+    final UserAccountRepository userAccountRepository;
 
     @Override
     public ResponseBase list(String name) {

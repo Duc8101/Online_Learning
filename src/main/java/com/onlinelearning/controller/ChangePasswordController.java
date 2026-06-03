@@ -5,7 +5,9 @@ import com.onlinelearning.model.dto.request.ChangePasswordRequestDto;
 import com.onlinelearning.model.dto.response.UserProfileResponseDto;
 import com.onlinelearning.service.ChangePasswordService;
 import jakarta.servlet.http.HttpSession;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,9 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/ChangePassword")
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ChangePasswordController {
 
-    private final ChangePasswordService changePasswordService;
+    final ChangePasswordService changePasswordService;
 
     @GetMapping("")
     public ModelAndView changePassword() {

@@ -13,7 +13,9 @@ import com.onlinelearning.repository.LessonRepository;
 import com.onlinelearning.repository.VideoRepository;
 import com.onlinelearning.service.ManagerLessonService;
 import com.onlinelearning.service.common.BaseService;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +26,15 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ManagerLessonServiceImpl extends BaseService implements ManagerLessonService {
 
-    private final CourseRepository courseRepository;
-    private final VideoRepository videoRepository;
-    private final LessonRepository lessonRepository;
-    private final LessonMapper lessonMapper;
+    final CourseRepository courseRepository;
+    final VideoRepository videoRepository;
+    final LessonRepository lessonRepository;
+    final LessonMapper lessonMapper;
 
-    private static final int MAX_LESSON_NAME = 200;
+    static final int MAX_LESSON_NAME = 200;
 
     @Override
     public ResponseBase list(int courseId, String fileVideo, String name, String filePdf, Integer lessonId, long userId) {
@@ -44,7 +47,7 @@ public class ManagerLessonServiceImpl extends BaseService implements ManagerLess
         return new ResponseBase("manager_lesson/list", data);
     }
 
-    private void setData(Map<String, Object> data, int courseId, String fileVideo, String name, String filePdf, Integer lessonId) {
+    void setData(Map<String, Object> data, int courseId, String fileVideo, String name, String filePdf, Integer lessonId) {
         setValueForHeaderFooter(data, false, true, false, false);
         List<ViewLessonResponseDto> lessons = lessonMapper.toViewLessonResponseDTOs(lessonRepository.getLessonsForManagerAndViewLesson(courseId));
 

@@ -4,7 +4,9 @@ import com.onlinelearning.model.ResponseBase;
 import com.onlinelearning.model.dto.request.PdfCreateRequestDto;
 import com.onlinelearning.model.dto.request.PdfUpdateRequestDto;
 import com.onlinelearning.service.ManagerPdfService;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,9 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/ManagerPdf")
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ManagerPdfController {
 
-    private final ManagerPdfService managerPdfService;
+    final ManagerPdfService managerPdfService;
 
     @PostMapping("/Create")
     public ModelAndView create(PdfCreateRequestDto DTO) {

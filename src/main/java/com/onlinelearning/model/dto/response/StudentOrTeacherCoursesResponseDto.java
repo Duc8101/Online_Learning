@@ -1,21 +1,20 @@
 package com.onlinelearning.model.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class StudentOrTeacherCoursesResponseDto {
 
-    private int courseId;
-    private String courseName;
-    private String image;
-    private int categoryId;
-    private long creatorId;
-    private String creatorName;
-    private String description;
+    int courseId;
+    String courseName;
+    String image;
+    int categoryId;
+    long creatorId;
+    String creatorName;
+    String description;
 }

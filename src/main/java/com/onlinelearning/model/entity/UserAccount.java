@@ -2,6 +2,7 @@ package com.onlinelearning.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -14,38 +15,39 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserAccount {
 
     @Id
     @UuidGenerator
-    private String userAccountId;
+    String userAccountId;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
+    User user;
 
     @Column(unique = true, nullable = false, columnDefinition = "varchar(30)")
-    private String username;
+    String username;
 
     @Column(nullable = false)
-    private String password;
+    String password;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
-    private Role role;
+    Role role;
 
     @Column(nullable = false)
-    private int failedLoginCount;
+    int failedLoginCount;
 
     @Column(columnDefinition = "datetime(0)")
-    private Instant lockoutEndTime;
+    Instant lockoutEndTime;
 
     @Column(nullable = false, columnDefinition = "datetime(0)")
     @CreationTimestamp
-    private Instant createdAt;
+    Instant createdAt;
 
     @Column(columnDefinition = "datetime(0)")
-    private Instant updatedAt;
+    Instant updatedAt;
 
     @PreUpdate
     public void preUpdate() {

@@ -9,7 +9,9 @@ import com.onlinelearning.repository.LessonRepository;
 import com.onlinelearning.repository.VideoRepository;
 import com.onlinelearning.service.ViewLessonService;
 import com.onlinelearning.service.common.BaseService;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +21,13 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ViewLessonServiceImpl extends BaseService implements ViewLessonService {
 
-    private final CourseRepository courseRepository;
-    private final VideoRepository videoRepository;
-    private final LessonRepository lessonRepository;
-    private final LessonMapper lessonMapper;
+    final CourseRepository courseRepository;
+    final VideoRepository videoRepository;
+    final LessonRepository lessonRepository;
+    final LessonMapper lessonMapper;
 
     @Override
     public ResponseBase viewLesson(int courseId, String fileVideo, String name, String filePdf, Integer lessonId) {

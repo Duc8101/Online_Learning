@@ -18,7 +18,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -28,15 +30,16 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class LoginServiceImpl extends BaseService implements LoginService {
 
-    private final ClientRepository clientRepository;
-    private final UserRepository userRepository;
-    private final UserAccountRepository userAccountRepository;
-    private final UserUtil userUtil;
-    private final UserMapper userMapper;
+    final ClientRepository clientRepository;
+    final UserRepository userRepository;
+    final UserAccountRepository userAccountRepository;
+    final UserUtil userUtil;
+    final UserMapper userMapper;
 
-    private static final int MAX_FAILED_LOGIN_ATTEMPTS = 5;
+    static final int MAX_FAILED_LOGIN_ATTEMPTS = 5;
 
     @Override
     public ResponseBase login(HttpServletRequest request, HttpServletResponse response) {

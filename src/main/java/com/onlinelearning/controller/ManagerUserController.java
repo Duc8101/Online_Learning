@@ -3,7 +3,9 @@ package com.onlinelearning.controller;
 import com.onlinelearning.model.ResponseBase;
 import com.onlinelearning.model.dto.request.TeacherCreateRequestDto;
 import com.onlinelearning.service.ManagerUserService;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +16,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/ManagerUser")
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ManagerUserController {
 
-    private final ManagerUserService managerUserService;
+    final ManagerUserService managerUserService;
 
     @GetMapping("")
     public ModelAndView list(String name) {

@@ -1,16 +1,19 @@
 package com.onlinelearning.model.dto.request;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class QuestionUpdateRequestDto {
 
-    private String questionName;
-    private String answer1;
-    private String answer2;
-    private String answer3;
-    private String answer4;
-    private int answerCorrect;
+    String questionName;
+    String answer1;
+    String answer2;
+    String answer3;
+    String answer4;
+    int answerCorrect;
 }

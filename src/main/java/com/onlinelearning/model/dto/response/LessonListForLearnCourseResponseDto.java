@@ -1,9 +1,7 @@
 package com.onlinelearning.model.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +10,12 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class LessonListForLearnCourseResponseDto {
 
-    private int lessonId;
-    private String lessonName;
-    private boolean quizExist;
-    private List<VideoListResponseDto> videos = new ArrayList<>();
-    private List<PdfListResponseDto> pdfs = new ArrayList<>();
+    int lessonId;
+    String lessonName;
+    boolean quizExist;
+    List<VideoListResponseDto> videos = new ArrayList<>();
+    List<PdfListResponseDto> pdfs = new ArrayList<>();
 }

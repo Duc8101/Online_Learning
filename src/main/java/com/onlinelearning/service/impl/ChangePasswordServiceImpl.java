@@ -6,7 +6,9 @@ import com.onlinelearning.repository.UserAccountRepository;
 import com.onlinelearning.service.ChangePasswordService;
 import com.onlinelearning.service.common.BaseService;
 import com.onlinelearning.util.UserUtil;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.HashMap;
@@ -14,10 +16,11 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ChangePasswordServiceImpl extends BaseService implements ChangePasswordService {
 
-    private final UserAccountRepository userAccountRepository;
-    private final UserUtil userUtil;
+    final UserAccountRepository userAccountRepository;
+    final UserUtil userUtil;
 
     @Override
     public ResponseBase changePassword() {

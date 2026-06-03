@@ -2,6 +2,7 @@ package com.onlinelearning.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
@@ -12,28 +13,29 @@ import java.time.Instant;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Pdf {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer pdfId;
+    Integer pdfId;
 
     @Column(nullable = false)
-    private String pdfName;
+    String pdfName;
 
     @Column(nullable = false)
-    private String filePdf;
+    String filePdf;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lesson_id", nullable = false)
-    private Lesson lesson;
+    Lesson lesson;
 
     @Column(nullable = false, columnDefinition = "datetime(0)")
     @CreationTimestamp
-    private Instant createdAt;
+    Instant createdAt;
 
     @Column(columnDefinition = "datetime(0)")
-    private Instant updatedAt;
+    Instant updatedAt;
 
     @PreUpdate
     public void preUpdate() {

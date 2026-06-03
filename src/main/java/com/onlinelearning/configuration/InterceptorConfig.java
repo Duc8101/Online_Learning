@@ -1,20 +1,23 @@
 package com.onlinelearning.configuration;
 
 import com.onlinelearning.interceptor.*;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class InterceptorConfig implements WebMvcConfigurer {
 
-    private final AuthenticationInterceptor authenticationInterceptor;
-    private final StudentInterceptor studentInterceptor;
-    private final TeacherInterceptor teacherInterceptor;
-    private final AdminInterceptor adminInterceptor;
-    private final NoCacheInterceptor noCacheInterceptor;
+    final AuthenticationInterceptor authenticationInterceptor;
+    final StudentInterceptor studentInterceptor;
+    final TeacherInterceptor teacherInterceptor;
+    final AdminInterceptor adminInterceptor;
+    final NoCacheInterceptor noCacheInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

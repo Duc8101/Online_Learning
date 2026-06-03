@@ -1,13 +1,16 @@
 package com.onlinelearning.model.dto.request;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class VideoCreateRequestDto {
 
-    private String videoName;
-    private String fileVideo;
-    private int lessonId;
+    String videoName;
+    String fileVideo;
+    int lessonId;
 }

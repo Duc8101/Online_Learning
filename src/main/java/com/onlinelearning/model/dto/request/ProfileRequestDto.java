@@ -1,16 +1,19 @@
 package com.onlinelearning.model.dto.request;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProfileRequestDto {
 
-    private String fullName;
-    private String phone;
-    private String image;
-    private String address;
-    private String email;
-    private String gender;
+    String fullName;
+    String phone;
+    String image;
+    String address;
+    String email;
+    String gender;
 }

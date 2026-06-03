@@ -3,6 +3,8 @@ package com.onlinelearning.util;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -12,19 +14,20 @@ import java.util.Properties;
 import java.util.Random;
 
 @Component
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUtil {
 
     @Value("${smtp.username}")
-    private String username;
+    String username;
 
     @Value("${smtp.password}")
-    private String password;
+    String password;
 
     @Value("${smtp.host}")
-    private String host;
+    String host;
 
     @Value("${smtp.port}")
-    private int port;
+    int port;
 
     public String hashPassword(String password) throws NoSuchAlgorithmException {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");

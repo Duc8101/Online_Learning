@@ -2,6 +2,7 @@ package com.onlinelearning.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UuidGenerator;
 
@@ -15,25 +16,26 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Client {
 
     @Id
     @UuidGenerator
-    private String clientId;
+    String clientId;
 
     @Column(nullable = false)
-    private String deviceInfo;
+    String deviceInfo;
 
     @Column(nullable = false)
-    private int failedLoginCount;
+    int failedLoginCount;
 
     @Column(columnDefinition = "datetime(0)")
-    private Instant lockoutEndTime;
+    Instant lockoutEndTime;
 
     @Column(nullable = false, columnDefinition = "datetime(0)")
     @CreationTimestamp
-    private Instant createdAt;
+    Instant createdAt;
 
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY)
-    private Set<UserClient> userClients = new HashSet<>();
+    Set<UserClient> userClients = new HashSet<>();
 }

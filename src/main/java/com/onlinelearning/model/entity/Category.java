@@ -2,6 +2,7 @@ package com.onlinelearning.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -13,15 +14,16 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Category implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer categoryId;
+    Integer categoryId;
 
     @Column(nullable = false)
-    private String categoryName;
+    String categoryName;
 
     @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    private Set<Course> courses = new HashSet<>();
+    Set<Course> courses = new HashSet<>();
 }

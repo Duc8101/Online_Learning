@@ -1,18 +1,17 @@
 package com.onlinelearning.model.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserListNotAdminResponseDto {
 
-    private long userId;
-    private String username;
-    private int roleId;
-    private String roleName;
+    long userId;
+    String username;
+    int roleId;
+    String roleName;
 }
