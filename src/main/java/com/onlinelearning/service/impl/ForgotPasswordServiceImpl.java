@@ -6,6 +6,7 @@ import com.onlinelearning.repository.UserRepository;
 import com.onlinelearning.service.ForgotPasswordService;
 import com.onlinelearning.service.common.BaseService;
 import com.onlinelearning.util.UserUtil;
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -32,6 +33,7 @@ public class ForgotPasswordServiceImpl extends BaseService implements ForgotPass
     }
 
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public ResponseBase forgotPassword(String email) throws Exception {
         Map<String, Object> data = new HashMap<>();
         setValueForHeaderFooter(data, true, false, false, true);
