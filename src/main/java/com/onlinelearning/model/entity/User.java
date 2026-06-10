@@ -64,7 +64,7 @@ public class User implements Serializable {
     Set<StartQuiz> startQuizzes = new HashSet<>();
 
     @PreUpdate
-    public void preUpdate() {
+    private void preUpdate() {
         this.updatedAt = Instant.now();
     }
 }

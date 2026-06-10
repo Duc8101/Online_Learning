@@ -49,7 +49,7 @@ public class UserAccount {
     Instant updatedAt;
 
     @PreUpdate
-    public void preUpdate() {
+    private void preUpdate() {
         this.updatedAt = Instant.now();
     }
 }

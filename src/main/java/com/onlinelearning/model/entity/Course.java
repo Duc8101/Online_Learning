@@ -56,7 +56,7 @@ public class Course implements Serializable {
     Set<Lesson> lessons = new HashSet<>();
 
     @PreUpdate
-    public void preUpdate() {
+    private void preUpdate() {
         this.updatedAt = Instant.now();
     }
 }

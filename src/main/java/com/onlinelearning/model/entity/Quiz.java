@@ -42,7 +42,7 @@ public class Quiz {
     Set<Result> results = new HashSet<>();
 
     @PreUpdate
-    public void preUpdate() {
+    private void preUpdate() {
         this.updatedAt = Instant.now();
     }
 }

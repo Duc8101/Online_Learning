@@ -37,7 +37,7 @@ public class Video {
     Instant updatedAt;
 
     @PreUpdate
-    public void preUpdate() {
+    private void preUpdate() {
         this.updatedAt = Instant.now();
     }
 }
