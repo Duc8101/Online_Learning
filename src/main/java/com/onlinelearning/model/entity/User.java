@@ -7,8 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "[user]")
@@ -47,21 +45,6 @@ public class User implements Serializable {
 
     @Column(columnDefinition = "datetime(0)")
     Instant updatedAt;
-
-    @OneToOne(mappedBy = "user")
-    UserAccount userAccount;
-
-    @OneToMany(mappedBy = "creator", fetch = FetchType.LAZY)
-    Set<Course> courses = new HashSet<>();
-
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    Set<EnrollCourse> enrollCourses = new HashSet<>();
-
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    Set<Result> results = new HashSet<>();
-
-    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
-    Set<StartQuiz> startQuizzes = new HashSet<>();
 
     @PreUpdate
     private void preUpdate() {

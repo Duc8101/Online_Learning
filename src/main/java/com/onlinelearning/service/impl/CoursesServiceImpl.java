@@ -1,11 +1,8 @@
 package com.onlinelearning.service.impl;
 
-import com.onlinelearning.mapper.LessonMapper;
 import com.onlinelearning.model.ResponseBase;
 import com.onlinelearning.model.dto.response.*;
-import com.onlinelearning.model.entity.Course;
 import com.onlinelearning.model.entity.EnrollCourse;
-import com.onlinelearning.model.entity.User;
 import com.onlinelearning.model.enumeration.UserRole;
 import com.onlinelearning.model.pagination.PageUrl;
 import com.onlinelearning.model.pagination.PagingRepo;
@@ -20,9 +17,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,10 +31,9 @@ public class CoursesServiceImpl extends BaseService implements CoursesService {
     final CategoryRepository categoryRepository;
     final CourseRepository courseRepository;
     final LessonRepository lessonRepository;
-    final UserRepository userRepository;
     final EnrollCourseRepository enrollCourseRepository;
-    final LessonMapper lessonMapper;
     final VideoRepository videoRepository;
+    final PdfRepository pdfRepository;
 
     static final int COURSES_PAGE = 6;
 
@@ -134,22 +132,16 @@ public class CoursesServiceImpl extends BaseService implements CoursesService {
     public ResponseBase enrollCourse(int courseId, long studentId) {
         Map<String, Object> data = new HashMap<>();
         setValueForHeaderFooter(data, true, true, true, true);
-        Course course = courseRepository.getCourseByCourseId(courseId);
-        if (course == null) {
-            data.put("error", "Course not found");
-            return new ResponseBase("shared/error", data);
-        }
 
-        User student = userRepository.findById(studentId).orElse(null);
-        if (student == null) {
-            data.put("error", "Student not found");
+        if (courseRepository.isCourseExist(courseId)) {
+            data.put("error", "Course not found");
             return new ResponseBase("shared/error", data);
         }
 
         // if student does not enroll course
         if (!enrollCourseRepository.checkStudentEnrollCourse(courseId, studentId)) {
             EnrollCourse enrollCourse = EnrollCourse.builder()
-                    .course(course).student(student)
+                    .courseId(courseId).studentId(studentId)
                     .build();
             enrollCourseRepository.save(enrollCourse);
         }
@@ -172,13 +164,28 @@ public class CoursesServiceImpl extends BaseService implements CoursesService {
             return new ResponseBase("redirect:/MyCourse", data);
         }
 
-        List<LessonListForLearnCourseResponseDto> lessons = lessonMapper.toLessonListForLearnCourseResponseDTOs(lessonRepository.getLessonsForLearnCourse(courseId));
+        List<LessonListForLearnCourseResponseDto> lessons = lessonRepository.getLessonsForLearnCourse(courseId);
         // if course doesn't have lesson
         if (lessons.isEmpty()) {
             return new ResponseBase("redirect:/MyCourse", data);
         }
 
         setValueForHeaderFooter(data, false, true, false, false);
+
+        List<Integer> lessonIds = lessons.stream().map(LessonListForLearnCourseResponseDto::getLessonId).toList();
+
+        List<VideoListResponseDto> videoList = videoRepository.getVideosByLessonIds(lessonIds);
+        Map<Integer, List<VideoListResponseDto>> videoMap = videoList.stream()
+                .collect(Collectors.groupingBy(VideoListResponseDto::getLessonId));
+
+        List<PdfListResponseDto> pdfs = pdfRepository.getPdfsByLessonIds(lessonIds);
+        Map<Integer, List<PdfListResponseDto>> pdfMap = pdfs.stream()
+                .collect(Collectors.groupingBy(PdfListResponseDto::getLessonId));
+
+        for (LessonListForLearnCourseResponseDto lesson : lessons) {
+            lesson.setVideos(videoMap.getOrDefault(lesson.getLessonId(), Collections.emptyList()));
+            lesson.setPdfs(pdfMap.getOrDefault(lesson.getLessonId(), Collections.emptyList()));
+        }
 
         // if start to learn course
         if (fileVideo == null && filePdf == null) {

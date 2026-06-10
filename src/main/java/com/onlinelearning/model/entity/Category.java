@@ -5,8 +5,6 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -22,7 +20,4 @@ public class Category implements Serializable {
 
     @Column(nullable = false)
     String categoryName;
-
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    Set<Course> courses = new HashSet<>();
 }

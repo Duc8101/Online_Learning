@@ -6,9 +6,7 @@ import com.onlinelearning.model.dto.request.CourseCreateUpdateRequestDto;
 import com.onlinelearning.model.dto.response.CategoryListResponseDto;
 import com.onlinelearning.model.dto.response.CheckLessonAndEnrollCourseExist;
 import com.onlinelearning.model.dto.response.StudentOrTeacherCoursesResponseDto;
-import com.onlinelearning.model.entity.Category;
 import com.onlinelearning.model.entity.Course;
-import com.onlinelearning.model.entity.User;
 import com.onlinelearning.model.pagination.PageUrl;
 import com.onlinelearning.model.pagination.PagingRepo;
 import com.onlinelearning.repository.*;
@@ -34,9 +32,6 @@ public class ManagerCourseServiceImpl extends BaseService implements ManagerCour
 
     final CourseRepository courseRepository;
     final CategoryRepository categoryRepository;
-    final UserRepository userRepository;
-    final LessonRepository lessonRepository;
-    final EnrollCourseRepository enrollCourseRepository;
     final CourseMapper courseMapper;
 
     static final int MANAGER_COURSE_LIST_PAGE = 3;
@@ -71,7 +66,7 @@ public class ManagerCourseServiceImpl extends BaseService implements ManagerCour
         return new ResponseBase("manager_course/list", data);
     }
 
-    void setDataCategories(Map<String, Object> data) {
+    private void setDataCategories(Map<String, Object> data) {
         List<CategoryListResponseDto> categories = categoryRepository.getAllCategories();
         data.put("categories", categories);
     }
@@ -87,12 +82,8 @@ public class ManagerCourseServiceImpl extends BaseService implements ManagerCour
             return new ResponseBase("manager_course/create", data);
         }
 
-        User creator = userRepository.findById(userId).orElse(null);
-        Category category = categoryRepository.findById(DTO.getCategoryId()).orElse(null);
-
         Course course = courseMapper.toCourse(DTO);
-        course.setCategory(category);
-        course.setCreator(creator);
+        course.setCreatorId(userId);
         courseRepository.save(course);
 
         data.put("success", "Create successful");

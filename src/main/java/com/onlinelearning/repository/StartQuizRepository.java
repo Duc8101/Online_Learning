@@ -15,10 +15,10 @@ public interface StartQuizRepository extends JpaRepository<StartQuiz, String> {
 
     @Transactional
     @Modifying
-    @Query("delete from StartQuiz sq where sq.student.userId = :studentId")
+    @Query("delete from StartQuiz sq where sq.studentId = :studentId")
     void deleteAllByStudentId(long studentId);
 
-    @Query("select sq.startQuizId from StartQuiz sq where sq.question.questionId = :questionId and sq.student.userId = :studentId")
+    @Query("select sq.startQuizId from StartQuiz sq where sq.questionId = :questionId and sq.studentId = :studentId")
     String getStartQuizId(int questionId, long studentId);
 
     @Transactional
@@ -26,15 +26,26 @@ public interface StartQuizRepository extends JpaRepository<StartQuiz, String> {
     @Query("update StartQuiz sq set sq.answer = :answer where sq.startQuizId = :startQuizId")
     void updateAnswer(Integer answer, String startQuizId);
 
-    @Query("select sq.answer from StartQuiz sq where sq.question.questionId = :questionId and sq.student.userId = :studentId")
+    @Query("select sq.answer from StartQuiz sq where sq.questionId = :questionId and sq.studentId = :studentId")
     List<Integer> getAnswers(int questionId, long studentId, Pageable pageable);
 
-    @Query("select sq.answer from StartQuiz sq where sq.question.quiz.quizId = :quizId and sq.student.userId = :studentId\n"
-            + "order by sq.question.questionId")
+    @Query("""
+            select sq.answer
+            from StartQuiz sq join Question q on sq.questionId = q.questionId
+            where q.quizId = :quizId and sq.studentId = :studentId
+            order by sq.questionId""")
     List<Integer> getChosenAnswers(int quizId, long studentId);
 
     @Transactional
     @Modifying
-    @Query("delete from StartQuiz sq where sq.student.userId = :studentId and sq.question.quiz.quizId = :quizId")
+    @Query("""
+                delete from StartQuiz sq
+                where sq.studentId = :studentId
+                  and sq.questionId in (
+                      select q.questionId
+                      from Question q
+                      where q.quizId = :quizId
+                  )
+            """)
     void deleteAllByStudentIdAndQuizId(long studentId, int quizId);
 }

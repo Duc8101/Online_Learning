@@ -13,6 +13,5 @@ public interface QuestionMapper {
     @Mapping(target = "answer2", expression = "java(DTO.getAnswer2().trim())")
     @Mapping(target = "answer3", expression = "java(DataUtil.trimToNull(DTO.getAnswer3()))")
     @Mapping(target = "answer4", expression = "java(DataUtil.trimToNull(DTO.getAnswer4()))")
-    @Mapping(target = "answerCorrect", ignore = true)
     Question toQuestion(QuestionCreateRequestDto DTO);
 }

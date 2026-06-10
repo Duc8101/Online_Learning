@@ -12,6 +12,12 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LessonListForLearnCourseResponseDto {
 
+    public LessonListForLearnCourseResponseDto(int lessonId, String lessonName, boolean quizExist) {
+        this.lessonId = lessonId;
+        this.lessonName = lessonName;
+        this.quizExist = quizExist;
+    }
+
     int lessonId;
     String lessonName;
     boolean quizExist;

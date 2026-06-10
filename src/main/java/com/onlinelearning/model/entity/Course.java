@@ -7,8 +7,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -28,13 +26,11 @@ public class Course implements Serializable {
     @Column(nullable = false)
     String image;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id", nullable = false)
-    Category category;
+    @Column(nullable = false)
+    int categoryId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "creator_id", nullable = false)
-    User creator;
+    @Column(nullable = false)
+    long creatorId;
 
     @Column
     String description;
@@ -48,12 +44,6 @@ public class Course implements Serializable {
 
     @Column(name = "is_deleted", nullable = false)
     boolean deleted;
-
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
-    Set<EnrollCourse> enrollCourses = new HashSet<>();
-
-    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
-    Set<Lesson> lessons = new HashSet<>();
 
     @PreUpdate
     private void preUpdate() {

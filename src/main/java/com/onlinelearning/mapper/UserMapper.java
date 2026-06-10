@@ -2,6 +2,7 @@ package com.onlinelearning.mapper;
 
 import com.onlinelearning.model.dto.request.RegisterRequestDto;
 import com.onlinelearning.model.dto.request.TeacherCreateRequestDto;
+import com.onlinelearning.model.dto.response.LoginCheckResponseDto;
 import com.onlinelearning.model.dto.response.UserProfileResponseDto;
 import com.onlinelearning.model.entity.User;
 import com.onlinelearning.util.DataUtil;
@@ -12,8 +13,15 @@ import org.mapstruct.Mapping;
 public interface UserMapper {
 
     @Mapping(target = "username", source = "userAccount.username")
-    @Mapping(target = "roleId", source = "userAccount.role.roleId")
-    UserProfileResponseDto toUserProfileResponseDto(User user);
+    @Mapping(target = "roleId", source = "userAccount.roleId")
+    @Mapping(target = "fullName", source = "user.fullName")
+    @Mapping(target = "email", source = "user.email")
+    @Mapping(target = "phone", source = "user.phone")
+    @Mapping(target = "address", source = "user.address")
+    @Mapping(target = "gender", source = "user.gender")
+    @Mapping(target = "image", source = "user.image")
+    @Mapping(target = "userId", source = "user.userId")
+    UserProfileResponseDto toUserProfileResponseDto(LoginCheckResponseDto DTO);
 
     @Mapping(target = "fullName", expression = "java(dto.getFullName().trim())")
     @Mapping(target = "email", expression = "java(dto.getEmail().trim())")

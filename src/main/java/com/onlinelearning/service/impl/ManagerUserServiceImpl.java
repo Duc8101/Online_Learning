@@ -5,12 +5,10 @@ import com.onlinelearning.model.ResponseBase;
 import com.onlinelearning.model.dto.request.TeacherCreateRequestDto;
 import com.onlinelearning.model.dto.response.UserListNotAdminResponseDto;
 import com.onlinelearning.model.dto.response.UserProfileResponseDto;
-import com.onlinelearning.model.entity.Role;
 import com.onlinelearning.model.entity.User;
 import com.onlinelearning.model.entity.UserAccount;
 import com.onlinelearning.model.enumeration.Gender;
 import com.onlinelearning.model.enumeration.UserRole;
-import com.onlinelearning.repository.RoleRepository;
 import com.onlinelearning.repository.UserAccountRepository;
 import com.onlinelearning.repository.UserRepository;
 import com.onlinelearning.service.ManagerUserService;
@@ -33,7 +31,6 @@ import java.util.Map;
 public class ManagerUserServiceImpl extends BaseService implements ManagerUserService {
 
     final UserRepository userRepository;
-    final RoleRepository roleRepository;
     final UserUtil userUtil;
     final UserMapper userMapper;
     final UserAccountRepository userAccountRepository;
@@ -96,17 +93,10 @@ public class ManagerUserServiceImpl extends BaseService implements ManagerUserSe
         user.setImage("https://i.pinimg.com/564x/31/ec/2c/31ec2ce212492e600b8de27f38846ed7.jpg");
         userRepository.save(user);
 
-        Role role = roleRepository.findById(UserRole.STUDENT.getValue()).orElse(null);
-        if (role == null) {
-            data.clear();
-            setValueForHeaderFooter(data, true, true, true, true);
-            data.put("error", "Role not found");
-            return new ResponseBase("shared/error", data);
-        }
-
         UserAccount userAccount = UserAccount.builder()
-                .user(user).username(DTO.getUsername())
-                .password(hashPw).role(role)
+                .userId(user.getUserId()).username(DTO.getUsername())
+                .password(hashPw)
+                .roleId(UserRole.TEACHER.getValue())
                 .build();
         userAccountRepository.save(userAccount);
 

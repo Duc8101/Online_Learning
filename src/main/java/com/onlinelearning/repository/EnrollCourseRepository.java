@@ -8,13 +8,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EnrollCourseRepository extends JpaRepository<EnrollCourse, String> {
 
-    @Query("select exists ("
-            + "SELECT 1 FROM EnrollCourse ec where ec.course.courseId = :courseId and ec.student.userId = :studentId"
-            + ")")
+    @Query("""
+            select exists (
+            SELECT 1 FROM EnrollCourse ec where ec.courseId = :courseId and ec.studentId = :studentId
+            )""")
     boolean checkStudentEnrollCourse(int courseId, long studentId);
 
-    @Query("select exists ("
-            + "SELECT 1 FROM EnrollCourse ec where ec.course.courseId = :courseId"
-            + ")")
+    @Query("""
+            select exists (
+            SELECT 1 FROM EnrollCourse ec where ec.courseId = :courseId
+            )""")
     boolean isEnrollCourseExist(int courseId);
 }

@@ -90,8 +90,6 @@ public class ManagerQuestionServiceImpl extends BaseService implements ManagerQu
         }
 
         Question question = questionMapper.toQuestion(DTO);
-        question.setQuiz(quiz);
-        question.setAnswerCorrect(DTO.getAnswerCorrect());
         questionRepository.save(question);
 
         data.put("quizId", DTO.getQuizId());

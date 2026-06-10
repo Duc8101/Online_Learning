@@ -21,13 +21,11 @@ public class EnrollCourse implements Serializable {
     @UuidGenerator
     String enrollCourseId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id", nullable = false)
-    Course course;
+    @Column(nullable = false)
+    int courseId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", nullable = false)
-    User student;
+    @Column(nullable = false)
+    long studentId;
 
     @Column(nullable = false, columnDefinition = "datetime(0)")
     @CreationTimestamp

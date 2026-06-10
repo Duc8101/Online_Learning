@@ -1,11 +1,12 @@
 package com.onlinelearning.service.impl;
 
-import com.onlinelearning.mapper.LessonMapper;
 import com.onlinelearning.model.ResponseBase;
+import com.onlinelearning.model.dto.response.PdfListResponseDto;
 import com.onlinelearning.model.dto.response.VideoListResponseDto;
 import com.onlinelearning.model.dto.response.ViewLessonResponseDto;
 import com.onlinelearning.repository.CourseRepository;
 import com.onlinelearning.repository.LessonRepository;
+import com.onlinelearning.repository.PdfRepository;
 import com.onlinelearning.repository.VideoRepository;
 import com.onlinelearning.service.ViewLessonService;
 import com.onlinelearning.service.common.BaseService;
@@ -15,9 +16,11 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +30,7 @@ public class ViewLessonServiceImpl extends BaseService implements ViewLessonServ
     final CourseRepository courseRepository;
     final VideoRepository videoRepository;
     final LessonRepository lessonRepository;
-    final LessonMapper lessonMapper;
+    final PdfRepository pdfRepository;
 
     @Override
     public ResponseBase viewLesson(int courseId, String fileVideo, String name, String filePdf, Integer lessonId) {
@@ -39,7 +42,24 @@ public class ViewLessonServiceImpl extends BaseService implements ViewLessonServ
 
         setValueForHeaderFooter(data, false, true, false, false);
 
-        List<ViewLessonResponseDto> lessons = lessonMapper.toViewLessonResponseDTOs(lessonRepository.getLessonsForManagerAndViewLesson(courseId));
+        List<ViewLessonResponseDto> lessons = lessonRepository.getLessonsForManagerAndViewLesson(courseId);
+
+        if (!lessons.isEmpty()) {
+            List<Integer> lessonIds = lessons.stream().map(ViewLessonResponseDto::getLessonId).toList();
+
+            List<VideoListResponseDto> videoList = videoRepository.getVideosByLessonIds(lessonIds);
+            Map<Integer, List<VideoListResponseDto>> videoMap = videoList.stream()
+                    .collect(Collectors.groupingBy(VideoListResponseDto::getLessonId));
+
+            List<PdfListResponseDto> pdfs = pdfRepository.getPdfsByLessonIds(lessonIds);
+            Map<Integer, List<PdfListResponseDto>> pdfMap = pdfs.stream()
+                    .collect(Collectors.groupingBy(PdfListResponseDto::getLessonId));
+
+            for (ViewLessonResponseDto lesson : lessons) {
+                lesson.setVideos(videoMap.getOrDefault(lesson.getLessonId(), Collections.emptyList()));
+                lesson.setPdfs(pdfMap.getOrDefault(lesson.getLessonId(), Collections.emptyList()));
+            }
+        }
 
         // if start to manager lesson
         if (fileVideo == null && filePdf == null) {

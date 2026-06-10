@@ -15,13 +15,11 @@ public class StartQuiz {
     @UuidGenerator
     String startQuizId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", nullable = false)
-    User student;
+    @Column(nullable = false)
+    long studentId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "question_id", nullable = false)
-    Question question;
+    @Column(nullable = false)
+    int questionId;
 
     @Column
     Integer answer;

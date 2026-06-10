@@ -12,8 +12,9 @@ import java.util.List;
 @Repository
 public interface ResultRepository extends JpaRepository<Result, String> {
 
-    @Query("select new com.onlinelearning.model.dto.response.ResultDetailResponseDto(r.resultId, r.quiz.quizId, r.student.userId"
-            + ", r.student.userAccount.username, r.score) from Result r\n"
-            + "where r.quiz.quizId = :quizId and r.student.userId = :studentId order by r.submittedAt desc")
+    @Query("""
+            select new com.onlinelearning.model.dto.response.ResultDetailResponseDto(r.resultId, r.quizId, r.studentId, ua.username, r.score)\s
+            from Result r join User u on r.studentId = u.userId join UserAccount ua on u.userId = ua.userId
+            where r.quizId = :quizId and r.studentId = :studentId order by r.submittedAt desc""")
     List<ResultDetailResponseDto> getLatestResult(int quizId, long studentId, Pageable pageable);
 }

@@ -25,9 +25,8 @@ public class Video {
     @Column(nullable = false)
     String fileVideo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lesson_id", nullable = false)
-    Lesson lesson;
+    @Column(nullable = false)
+    int lessonId;
 
     @Column(nullable = false, columnDefinition = "datetime(0)")
     @CreationTimestamp

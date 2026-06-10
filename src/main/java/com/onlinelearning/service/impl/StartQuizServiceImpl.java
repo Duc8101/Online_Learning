@@ -32,7 +32,6 @@ public class StartQuizServiceImpl extends BaseService implements StartQuizServic
     final ResultRepository resultRepository;
     final StartQuizRepository startQuizRepository;
     final QuestionRepository questionRepository;
-    final UserRepository userRepository;
 
     private void setAnswers(Map<String, Object> data) {
         data.put("answer1", Answer.ANSWER1.getValue());
@@ -117,12 +116,9 @@ public class StartQuizServiceImpl extends BaseService implements StartQuizServic
 
         // if not answer current question yet
         if (startQuizId == null) {
-            User student = userRepository.findById(userId).orElse(null);
-            Question question = questionRepository.findById(DTO.getQuestionId()).orElse(null);
-
             StartQuiz startQuiz = new StartQuiz();
-            startQuiz.setQuestion(question);
-            startQuiz.setStudent(student);
+            startQuiz.setQuestionId(DTO.getQuestionId());
+            startQuiz.setStudentId(userId);
             startQuiz.setAnswer(DTO.getAnswer());
             startQuizRepository.save(startQuiz);
         } else {
@@ -161,11 +157,9 @@ public class StartQuizServiceImpl extends BaseService implements StartQuizServic
 
         // if not answer current question yet
         if (startQuizId == null)  {
-            User student = userRepository.findById(userId).orElse(null);
-            Question question = questionRepository.findById(DTO.getQuestionId()).orElse(null);
             StartQuiz startQuiz = new StartQuiz();
-            startQuiz.setQuestion(question);
-            startQuiz.setStudent(student);
+            startQuiz.setQuestionId(DTO.getQuestionId());
+            startQuiz.setStudentId(userId);
             startQuiz.setAnswer(DTO.getAnswer());
             startQuizRepository.save(startQuiz);
         } else {
@@ -189,13 +183,10 @@ public class StartQuizServiceImpl extends BaseService implements StartQuizServic
 
         startQuizRepository.deleteAllByStudentIdAndQuizId(userId, DTO.getQuizId());
 
-        Quiz quiz = quizRepository.findById(DTO.getQuizId()).orElse(null);
-        User student = userRepository.findById(userId).orElse(null);
-
         Result result = new Result();
-        result.setQuiz(quiz);
+        result.setQuizId(DTO.getQuizId());
         result.setScore(finalScore);
-        result.setStudent(student);
+        result.setStudentId(userId);
         resultRepository.save(result);
         return new ResponseBase(String.format("redirect:/Result?quizId=%d", DTO.getQuizId()), data);
     }

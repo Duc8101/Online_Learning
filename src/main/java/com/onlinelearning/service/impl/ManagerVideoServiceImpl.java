@@ -1,16 +1,16 @@
 package com.onlinelearning.service.impl;
 
-import com.onlinelearning.mapper.LessonMapper;
 import com.onlinelearning.mapper.VideoMapper;
 import com.onlinelearning.model.ResponseBase;
 import com.onlinelearning.model.dto.request.VideoCreateRequestDto;
 import com.onlinelearning.model.dto.request.VideoUpdateRequestDto;
+import com.onlinelearning.model.dto.response.PdfListResponseDto;
 import com.onlinelearning.model.dto.response.VideoListResponseDto;
 import com.onlinelearning.model.dto.response.VideoUpdateResponseDto;
 import com.onlinelearning.model.dto.response.ViewLessonResponseDto;
-import com.onlinelearning.model.entity.Lesson;
 import com.onlinelearning.model.entity.Video;
 import com.onlinelearning.repository.LessonRepository;
+import com.onlinelearning.repository.PdfRepository;
 import com.onlinelearning.repository.VideoRepository;
 import com.onlinelearning.service.ManagerVideoService;
 import com.onlinelearning.service.common.BaseService;
@@ -21,9 +21,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -32,13 +34,31 @@ public class ManagerVideoServiceImpl extends BaseService implements ManagerVideo
 
     final LessonRepository lessonRepository;
     final VideoRepository videoRepository;
-    final LessonMapper lessonMapper;
     final VideoMapper videoMapper;
+    final PdfRepository pdfRepository;
 
     private void setData(Map<String, Object> data, int courseId, String fileVideo,  String name, Integer lessonId) {
         setValueForHeaderFooter(data, false, true, false, false);
 
-        List<ViewLessonResponseDto> lessons = lessonMapper.toViewLessonResponseDTOs(lessonRepository.getLessonsForManagerAndViewLesson(courseId));
+        List<ViewLessonResponseDto> lessons = lessonRepository.getLessonsForManagerAndViewLesson(courseId);
+
+        if (!lessons.isEmpty()) {
+            List<Integer> lessonIds = lessons.stream().map(ViewLessonResponseDto::getLessonId).toList();
+
+            List<VideoListResponseDto> videoList = videoRepository.getVideosByLessonIds(lessonIds);
+            Map<Integer, List<VideoListResponseDto>> videoMap = videoList.stream()
+                    .collect(Collectors.groupingBy(VideoListResponseDto::getLessonId));
+
+            List<PdfListResponseDto> pdfs = pdfRepository.getPdfsByLessonIds(lessonIds);
+            Map<Integer, List<PdfListResponseDto>> pdfMap = pdfs.stream()
+                    .collect(Collectors.groupingBy(PdfListResponseDto::getLessonId));
+
+            for (ViewLessonResponseDto lesson : lessons) {
+                lesson.setVideos(videoMap.getOrDefault(lesson.getLessonId(), Collections.emptyList()));
+                lesson.setPdfs(pdfMap.getOrDefault(lesson.getLessonId(), Collections.emptyList()));
+            }
+        }
+
         if (fileVideo == null) {
             List<VideoListResponseDto> videos = videoRepository.getVideosOfCourse(courseId, PageRequest.of(0, 1));
             if (!videos.isEmpty()) {
@@ -59,23 +79,23 @@ public class ManagerVideoServiceImpl extends BaseService implements ManagerVideo
     @Override
     public ResponseBase create(VideoCreateRequestDto DTO) {
         Map<String, Object> data = new HashMap<>();
-        Lesson lesson = lessonRepository.getByLessonId(DTO.getLessonId());
-        if (lesson == null) {
+
+        Integer courseId = lessonRepository.getCourseId(DTO.getLessonId());
+        if (courseId == null) {
             setValueForHeaderFooter(data, true, true, true, true);
             data.put("error", "Lesson not found or course might be deleted");
             return new ResponseBase("shared/error", data);
         }
 
         if (DTO.getVideoName().trim().isEmpty()) {
-            setData(data, lesson.getCourse().getCourseId(), null, null, DTO.getLessonId());
+            setData(data, courseId, null, null, DTO.getLessonId());
             data.put("error", "Video name not empty");
             return new ResponseBase("manager_lesson/list", data);
         }
 
         Video video = videoMapper.toVideo(DTO);
-        video.setLesson(lesson);
         videoRepository.save(video);
-        return new ResponseBase(String.format("redirect:/ManagerLesson/%d?lessonId=%d&name=%s&video=%s", lesson.getCourse().getCourseId(), DTO.getLessonId(), DTO.getVideoName().trim(), DTO.getFileVideo()), data);
+        return new ResponseBase(String.format("redirect:/ManagerLesson/%d?lessonId=%d&name=%s&video=%s", courseId, DTO.getLessonId(), DTO.getVideoName().trim(), DTO.getFileVideo()), data);
     }
 
     @Override

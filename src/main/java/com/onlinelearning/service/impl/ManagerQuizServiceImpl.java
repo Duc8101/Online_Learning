@@ -5,7 +5,6 @@ import com.onlinelearning.model.dto.request.QuizCreateRequestDto;
 import com.onlinelearning.model.dto.request.QuizUpdateRequestDto;
 import com.onlinelearning.model.dto.response.QuizListResponseDto;
 import com.onlinelearning.model.dto.response.QuizUpdateResponseDto;
-import com.onlinelearning.model.entity.Lesson;
 import com.onlinelearning.model.entity.Quiz;
 import com.onlinelearning.repository.CourseRepository;
 import com.onlinelearning.repository.LessonRepository;
@@ -79,8 +78,7 @@ public class ManagerQuizServiceImpl extends BaseService implements ManagerQuizSe
         Map<String, Object> data = new HashMap<>();
         setValueForHeaderFooter(data, true, true, true, true);
 
-        Lesson lesson = lessonRepository.getByLessonId(DTO.getLessonId());
-        if (lesson == null) {
+        if (lessonRepository.isLessonExist(DTO.getLessonId())) {
             data.put("error", "Lesson not found or course might be deleted");
             return new ResponseBase("shared/error", data);
         }
@@ -91,12 +89,12 @@ public class ManagerQuizServiceImpl extends BaseService implements ManagerQuizSe
         }
 
         Quiz quiz = Quiz.builder()
-                .lesson(lesson)
+                .lessonId(DTO.getLessonId())
                 .quizName(DTO.getQuizName().trim()).build();
         quizRepository.save(quiz);
 
         data.put("success", "Create successful");
-        data.put("lessonId", lesson.getLessonId());
+        data.put("lessonId", DTO.getLessonId());
         return new ResponseBase("manager_quiz/create", data);
     }
 

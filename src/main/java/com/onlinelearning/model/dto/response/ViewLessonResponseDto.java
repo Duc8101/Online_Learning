@@ -12,6 +12,11 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ViewLessonResponseDto {
 
+    public ViewLessonResponseDto(int lessonId, String lessonName) {
+        this.lessonId = lessonId;
+        this.lessonName = lessonName;
+    }
+
     int lessonId;
     String lessonName;
     List<VideoListResponseDto> videos = new ArrayList<>();

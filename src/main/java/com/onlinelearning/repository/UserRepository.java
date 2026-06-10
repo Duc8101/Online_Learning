@@ -1,5 +1,6 @@
 package com.onlinelearning.repository;
 
+import com.onlinelearning.model.dto.response.LoginCheckResponseDto;
 import com.onlinelearning.model.dto.response.UserForHomePageResponseDto;
 import com.onlinelearning.model.dto.response.UserListNotAdminResponseDto;
 import com.onlinelearning.model.dto.response.UserProfileResponseDto;
@@ -19,24 +20,31 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("""
             SELECT new com.onlinelearning.model.dto.response.UserForHomePageResponseDto(u.userId, u.fullName, u.image)
-            FROM User u
-            WHERE u.userAccount.role.roleId = :role""")
+            FROM User u join UserAccount ua on u.userId = ua.userId
+            WHERE ua.roleId = :role""")
     List<UserForHomePageResponseDto> getTop4Teachers(int role, Pageable pageable);
 
-    @Query("select new com.onlinelearning.model.dto.response.UserProfileResponseDto(u.userId, u.fullName, u.phone, u.image"
-            + ", u.address, u.email, u.gender, u.userAccount.username, u.userAccount.role.roleId) from User u\n"
-            + "where u.userId = :userId")
+    @Query("""
+            select new com.onlinelearning.model.dto.response.UserProfileResponseDto(u.userId, u.fullName, u.phone, u.image
+            , u.address, u.email, u.gender, ua.username, ua.roleId)\s
+            from User u join UserAccount ua on u.userId = ua.userId
+            where u.userId = :userId""")
     UserProfileResponseDto getUserProfile(long userId);
 
-    @Query("select u from User u left join fetch u.userAccount ua left join fetch ua.role where u.userAccount.username = :username")
-    User getFirstByUsername(String username);
+    @Query("""
+            SELECT new com.onlinelearning.model.dto.response.LoginCheckResponseDto(u, ua)\s
+            from User u join UserAccount ua on u.userId = ua.userId
+            where ua.username = :username
+            """)
+    LoginCheckResponseDto getFirstByUsername(String username);
 
     @Query("SELECT u.userId FROM User u WHERE u.email = :email")
     Long getUserId(String email);
 
-    @Query("select exists ("
-            + "SELECT 1 from User u where u.userAccount.username = :username or u.email = :email"
-            + ")")
+    @Query("""
+            select exists (
+            SELECT 1 from User u join UserAccount ua on u.userId = ua.userId where ua.username = :username or u.email = :email
+            )""")
     boolean isUsernameOrEmailExist(String username, String email);
 
     @Query("""
@@ -50,7 +58,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("UPDATE User u SET u.fullName = :fullName, u.phone = :phone, u.email = :email, u.address = :address, u.gender = :gender, u.image = :image, u.updatedAt = :updatedAt where u.userId = :userId")
     void updateProfile(String fullName, String phone, String email, String address, String gender, String image, Instant updatedAt, long userId);
 
-    @Query("SELECT new com.onlinelearning.model.dto.response.UserListNotAdminResponseDto(u.userId, u.userAccount.username, u.userAccount.role.roleId, u.userAccount.role.roleName) from User u\n"
-            + "where u.userAccount.role.roleId <> :roleId and ((:name is null or :name = '') or u.userAccount.username like CONCAT('%', :name, '%'))")
+    @Query("""
+            SELECT new com.onlinelearning.model.dto.response.UserListNotAdminResponseDto(u.userId, ua.username, ua.roleId, r.roleName)
+            from User u join UserAccount ua on u.userId = ua.userId join Role r on ua.roleId = r.roleId
+            where ua.roleId <> :roleId and ((:name is null or :name = '') or ua.username like CONCAT('%', :name, '%'))""")
     List<UserListNotAdminResponseDto> getUsersNotAdmin(int roleId, String name);
 }

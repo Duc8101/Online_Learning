@@ -6,8 +6,6 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Data
@@ -24,9 +22,8 @@ public class Question {
     @Column(nullable = false)
     String questionName;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "quiz_id", nullable = false)
-    Quiz quiz;
+    @Column(nullable = false)
+    int quizId;
 
     @Column(nullable = false)
     String answer1;
@@ -49,9 +46,6 @@ public class Question {
 
     @Column(columnDefinition = "datetime(0)")
     Instant updatedAt;
-
-    @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)
-    Set<StartQuiz> startQuizzes = new HashSet<>();
 
     @PreUpdate
     private void preUpdate() {

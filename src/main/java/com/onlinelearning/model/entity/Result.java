@@ -18,13 +18,11 @@ public class Result {
     @UuidGenerator
     String resultId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "quiz_id", nullable = false)
-    Quiz quiz;
+    @Column(nullable = false)
+    int quizId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", nullable = false)
-    User student;
+    @Column(nullable = false)
+    long studentId;
 
     @Column(nullable = false)
     double score;

@@ -21,9 +21,8 @@ public class UserAccount {
     @UuidGenerator
     String userAccountId;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    User user;
+    @Column(nullable = false)
+    long userId;
 
     @Column(unique = true, nullable = false, columnDefinition = "varchar(30)")
     String username;
@@ -31,9 +30,8 @@ public class UserAccount {
     @Column(nullable = false)
     String password;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = false)
-    Role role;
+    @Column(nullable = false)
+    int roleId;
 
     @Column(nullable = false)
     int failedLoginCount;
