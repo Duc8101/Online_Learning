@@ -16,7 +16,7 @@ import com.onlinelearning.service.ManagerCourseService;
 import com.onlinelearning.service.common.BaseService;
 import com.onlinelearning.util.DataUtil;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ManagerCourseServiceImpl extends BaseService implements ManagerCourseService {
 

@@ -11,7 +11,7 @@ import com.onlinelearning.service.StartQuizService;
 import com.onlinelearning.service.common.BaseService;
 import jakarta.persistence.Tuple;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class StartQuizServiceImpl extends BaseService implements StartQuizService {
 

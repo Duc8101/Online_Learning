@@ -3,8 +3,7 @@ package com.onlinelearning.model.dto.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AllCoursesResponseDto extends StudentOrTeacherCoursesResponseDto {

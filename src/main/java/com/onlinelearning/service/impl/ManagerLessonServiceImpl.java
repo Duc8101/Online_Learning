@@ -14,7 +14,7 @@ import com.onlinelearning.repository.VideoRepository;
 import com.onlinelearning.service.ManagerLessonService;
 import com.onlinelearning.service.common.BaseService;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ManagerLessonServiceImpl extends BaseService implements ManagerLessonService {
 

@@ -12,8 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "[user]")
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -63,9 +62,6 @@ public class User implements Serializable {
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     Set<StartQuiz> startQuizzes = new HashSet<>();
-
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    Set<UserClient> userClients = new HashSet<>();
 
     @PreUpdate
     public void preUpdate() {

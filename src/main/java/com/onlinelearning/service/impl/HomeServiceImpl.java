@@ -7,7 +7,7 @@ import com.onlinelearning.repository.UserRepository;
 import com.onlinelearning.service.HomeService;
 import com.onlinelearning.service.common.BaseService;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class HomeServiceImpl extends BaseService implements HomeService {
 

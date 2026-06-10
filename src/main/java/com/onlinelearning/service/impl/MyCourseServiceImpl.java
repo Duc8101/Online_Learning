@@ -8,7 +8,7 @@ import com.onlinelearning.repository.CourseRepository;
 import com.onlinelearning.service.MyCourseService;
 import com.onlinelearning.service.common.BaseService;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MyCourseServiceImpl extends BaseService implements MyCourseService {
 

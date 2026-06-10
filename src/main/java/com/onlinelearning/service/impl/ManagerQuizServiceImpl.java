@@ -14,7 +14,7 @@ import com.onlinelearning.service.ManagerQuizService;
 import com.onlinelearning.service.common.BaseService;
 import jakarta.persistence.Tuple;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ManagerQuizServiceImpl extends BaseService implements ManagerQuizService {
 

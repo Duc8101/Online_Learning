@@ -3,15 +3,12 @@ package com.onlinelearning.service.impl;
 import com.onlinelearning.mapper.UserMapper;
 import com.onlinelearning.model.ResponseBase;
 import com.onlinelearning.model.dto.response.UserProfileResponseDto;
-import com.onlinelearning.model.entity.Client;
 import com.onlinelearning.model.entity.User;
-import com.onlinelearning.repository.ClientRepository;
 import com.onlinelearning.repository.UserAccountRepository;
 import com.onlinelearning.repository.UserRepository;
 import com.onlinelearning.service.LoginService;
 import com.onlinelearning.service.common.BaseService;
 import com.onlinelearning.util.DataUtil;
-import com.onlinelearning.util.SystemUtil;
 import com.onlinelearning.util.UserUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
@@ -29,11 +26,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class LoginServiceImpl extends BaseService implements LoginService {
 
-    final ClientRepository clientRepository;
     final UserRepository userRepository;
     final UserAccountRepository userAccountRepository;
     final UserUtil userUtil;
@@ -88,45 +84,11 @@ public class LoginServiceImpl extends BaseService implements LoginService {
     @Transactional(rollbackOn = Exception.class)
     public ResponseBase login(String username, String password, HttpSession session, HttpServletResponse response) throws Exception {
         Map<String, Object> data = new HashMap<>();
-        String deviceInfo = SystemUtil.generate();
-        Client client = clientRepository.findFirstByDeviceInfo(deviceInfo);
-        if (client == null) {
-            client = Client.builder().deviceInfo(deviceInfo).build();
-            clientRepository.save(client);
-        }
-
-        if (client.getLockoutEndTime() != null && client.getLockoutEndTime().isAfter(Instant.now())) {
-            setValueForHeaderFooter(data, true, false, false, true);
-            data.put("error", "Too many failed login attempts. Please try again later");
-            return new ResponseBase().withData(data).withViewName("login");
-        }
-
-        if (client.getFailedLoginCount() >= MAX_FAILED_LOGIN_ATTEMPTS) {
-            clientRepository.setFailedLoginCount(0, client.getClientId());
-        }
-
         User user = userRepository.getFirstByUsername(username);
 
         // nếu sai thông tin tên đăng nhập
         if (user == null) {
-            client.setFailedLoginCount(client.getFailedLoginCount() + 1);
-            setValueForHeaderFooter(data, true, false, false, true);
-
-            if (client.getFailedLoginCount() > MAX_FAILED_LOGIN_ATTEMPTS) {
-                data.put("error", "Too many failed login attempts. Please try again later");
-                return new ResponseBase().withData(data).withViewName("login");
-            }
-
-            if (client.getFailedLoginCount() == MAX_FAILED_LOGIN_ATTEMPTS) {
-                client.setLockoutEndTime(Instant.now().plusSeconds(10 * 60));
-                clientRepository.save(client);
-
-                data.put("error", "Too many failed login attempts. Please try again later");
-                return new ResponseBase().withData(data).withViewName("login");
-            }
-
-            clientRepository.setFailedLoginCount(client.getFailedLoginCount(), client.getClientId());
-            data.put("error", "Information login not correct");
+            data.put("error", "This account is not registered");
             return new ResponseBase().withData(data).withViewName("login");
         }
 
@@ -153,28 +115,19 @@ public class LoginServiceImpl extends BaseService implements LoginService {
             setValueForHeaderFooter(data, true, false, false, true);
 
             int userFailedLoginCount = user.getUserAccount().getFailedLoginCount() + 1;
+            userAccountRepository.setLockoutEndTimeAndFailedLoginCount(Instant.now().plusSeconds(10 * 60), userFailedLoginCount, user.getUserAccount().getUserAccountId());
 
             // nếu nhập sai đến mức tối đa
             if (userFailedLoginCount >= MAX_FAILED_LOGIN_ATTEMPTS) {
-                userAccountRepository.setLockoutEndTimeAndFailedLoginCount(Instant.now().plusSeconds(10 * 60), userFailedLoginCount, user.getUserAccount().getUserAccountId());
                 data.put("error", ("Your account is locked. Please come back after 15 minutes"));
                 return new ResponseBase().withData(data).withViewName("login");
             }
 
-            int clientFailedLoginCount = client.getFailedLoginCount() + 1;
-            if (clientFailedLoginCount >= MAX_FAILED_LOGIN_ATTEMPTS) {
-                clientRepository.setLockoutEndTimeAndFailedLoginCount(Instant.now().plusSeconds(10 * 60), clientFailedLoginCount, client.getClientId());
-                data.put("error", "Too many failed login attempts. Please try again later");
-                return new ResponseBase().withData(data).withViewName("login");
-            }
-
-            clientRepository.setFailedLoginCount(clientFailedLoginCount, client.getClientId());
             data.put("error", "Information login not correct");
             return new ResponseBase().withData(data).withViewName("login");
         }
 
         userAccountRepository.setFailedLoginCount(0, user.getUserAccount().getUserAccountId());
-        clientRepository.setFailedLoginCount(0, client.getClientId());
 
         UserProfileResponseDto userDto = userMapper.toUserProfileResponseDto(user);
         session.setAttribute("user", userDto);

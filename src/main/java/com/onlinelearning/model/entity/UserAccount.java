@@ -10,8 +10,7 @@ import java.time.Instant;
 
 @Entity
 @Table
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

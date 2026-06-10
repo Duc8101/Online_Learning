@@ -10,7 +10,7 @@ import com.onlinelearning.service.common.BaseService;
 import com.onlinelearning.util.DataUtil;
 import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProfileServiceImpl extends BaseService implements ProfileService {
 

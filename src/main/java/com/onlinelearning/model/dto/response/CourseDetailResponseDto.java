@@ -9,8 +9,7 @@ import lombok.experimental.FieldDefaults;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CourseDetailResponseDto extends AllCoursesResponseDto {
 
